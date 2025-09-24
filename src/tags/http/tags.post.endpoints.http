@@ -1,9 +1,0 @@
-POST http://localhost:3000/tags 
-Content-Type: application/json
-
-{
-    "name": "typescript",
-    "slug": "typescript",
-    "description": "typescript description",
-    "featuredImageUrl": "https://example.com/image.jpg"
-}
