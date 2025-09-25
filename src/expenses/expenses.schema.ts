@@ -1,13 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ExpenseCategory } from './expenses.enums';
 
-@Schema(
-  {
-    timestamps: true,
-    collection: 'expenses',
-    versionKey: false,
-  },
-)
+@Schema({
+  timestamps: true,
+  collection: 'expenses',
+  versionKey: false,
+})
 export class Expense {
   @Prop({ type: String, required: true })
   Date: string;

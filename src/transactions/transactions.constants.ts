@@ -1,4 +1,4 @@
-import { PaperType } from "./transactions.enums";
+import { PaperType } from './transactions.enums';
 
 export const PaperCostMap: Record<PaperType, number> = {
   [PaperType.A3]: 0.9,

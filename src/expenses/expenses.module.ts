@@ -8,11 +8,13 @@ import { Expense, ExpenseSchema } from './expenses.schema';
   controllers: [ExpensesController],
   providers: [ExpensesService],
   exports: [ExpensesService],
-  imports: [MongooseModule.forFeature([
-    {
-      name: Expense.name,
-      schema: ExpenseSchema,
-    },
-  ])]
+  imports: [
+    MongooseModule.forFeature([
+      {
+        name: Expense.name,
+        schema: ExpenseSchema,
+      },
+    ]),
+  ],
 })
-export class ExpensesModule { }
+export class ExpensesModule {}

@@ -17,7 +17,7 @@ export class AttendanceController {
   @Get('')
   public getAttendanceLogs() {
     return this.usersService.getAttendanceLogs();
-  } 
+  }
 
   @Get('/:id')
   public getAttendanceLog(@Param('id') id: string) {
@@ -32,7 +32,10 @@ export class AttendanceController {
   }
 
   @Put('/:id')
-  public updateAttendanceLog(@Param('id') id: string, @Body() updateAttendanceLogDto: UpdateAttendanceLogDto) {
+  public updateAttendanceLog(
+    @Param('id') id: string,
+    @Body() updateAttendanceLogDto: UpdateAttendanceLogDto,
+  ) {
     return this.usersService.updateAttendanceLog(id, updateAttendanceLogDto);
   }
 

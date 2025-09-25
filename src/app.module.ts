@@ -9,7 +9,9 @@ import { ExpensesModule } from './expenses/expenses.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/', { dbName: 'Mr-Print' }),
+    MongooseModule.forRoot('mongodb://127.0.0.1:27017/', {
+      dbName: 'Mr-Print',
+    }),
     UsersModule,
     AttendanceModule,
     TransactionsModule,
@@ -18,4 +20,4 @@ import { ExpensesModule } from './expenses/expenses.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

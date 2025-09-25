@@ -25,14 +25,15 @@ export class TransactionsController {
   }
 
   @Post()
-  public createTransaction(
-    @Body() createTransactionDto: CreateTransactionDto,
-  ) {
+  public createTransaction(@Body() createTransactionDto: CreateTransactionDto) {
     return this.transactionsService.createTransaction(createTransactionDto);
   }
 
   @Put('/:id')
-  public updateTransaction(@Param('id') id: string, @Body() updateTransactionDto: UpdateTransactionDto) {
+  public updateTransaction(
+    @Param('id') id: string,
+    @Body() updateTransactionDto: UpdateTransactionDto,
+  ) {
     return this.transactionsService.updateTransaction(id, updateTransactionDto);
   }
 

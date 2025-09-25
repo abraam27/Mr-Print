@@ -25,14 +25,15 @@ export class ExpensesController {
   }
 
   @Post()
-  public createExpense(
-    @Body() createExpenseDto: CreateExpenseDto,
-  ) {
+  public createExpense(@Body() createExpenseDto: CreateExpenseDto) {
     return this.expensesService.createExpense(createExpenseDto);
   }
 
   @Put('/:id')
-  public updateExpense(@Param('id') id: string, @Body() updateExpenseDto: UpdateExpenseDto) {
+  public updateExpense(
+    @Param('id') id: string,
+    @Body() updateExpenseDto: UpdateExpenseDto,
+  ) {
     return this.expensesService.updateExpense(id, updateExpenseDto);
   }
 

@@ -1,4 +1,11 @@
-import { IsString, IsBoolean, IsNumber, IsOptional, IsEnum, IsNotEmpty } from 'class-validator';
+import {
+  IsString,
+  IsBoolean,
+  IsNumber,
+  IsOptional,
+  IsEnum,
+  IsNotEmpty,
+} from 'class-validator';
 import { PaperType } from '../transactions.enums';
 
 export class CreateTransactionDto {

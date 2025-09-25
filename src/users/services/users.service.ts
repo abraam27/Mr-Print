@@ -30,5 +30,5 @@ export class UsersService {
 
   async deleteUser(id: string): Promise<User | null> {
     return await this.userModel.findByIdAndDelete(id);
-  } 
+  }
 }

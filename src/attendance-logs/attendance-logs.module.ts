@@ -16,6 +16,6 @@ import { UsersModule } from '../users/users.module';
         schema: AttendanceLogSchema,
       },
     ]),
-  ]
+  ],
 })
-export class AttendanceModule { }
+export class AttendanceModule {}

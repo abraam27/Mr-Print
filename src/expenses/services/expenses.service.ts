@@ -24,11 +24,14 @@ export class ExpensesService {
     return await this.userModel.create(expense);
   }
 
-  async updateExpense(id: string, expense: UpdateExpenseDto): Promise<Expense | null> {
+  async updateExpense(
+    id: string,
+    expense: UpdateExpenseDto,
+  ): Promise<Expense | null> {
     return await this.userModel.findByIdAndUpdate(id, expense, { new: true });
   }
 
   async deleteExpense(id: string): Promise<Expense | null> {
     return await this.userModel.findByIdAndDelete(id);
-  } 
+  }
 }

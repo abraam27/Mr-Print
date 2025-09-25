@@ -20,15 +20,20 @@ export class AttendanceLogsService {
     return this.userModel.findById(id);
   }
 
-  async createAttendanceLog(user: CreateAttendanceLogDto): Promise<AttendanceLog> {
+  async createAttendanceLog(
+    user: CreateAttendanceLogDto,
+  ): Promise<AttendanceLog> {
     return await this.userModel.create(user);
   }
 
-  async updateAttendanceLog(id: string, user: UpdateAttendanceLogDto): Promise<AttendanceLog | null> {
+  async updateAttendanceLog(
+    id: string,
+    user: UpdateAttendanceLogDto,
+  ): Promise<AttendanceLog | null> {
     return await this.userModel.findByIdAndUpdate(id, user, { new: true });
   }
 
   async deleteAttendanceLog(id: string): Promise<AttendanceLog | null> {
     return await this.userModel.findByIdAndDelete(id);
-  } 
+  }
 }

@@ -1,13 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { PaperType } from './transactions.enums';
 
-@Schema(
-  {
-    timestamps: true,
-    collection: 'transactions',
-    versionKey: false,
-  },
-)
+@Schema({
+  timestamps: true,
+  collection: 'transactions',
+  versionKey: false,
+})
 export class Transaction {
   @Prop({ type: String, required: true })
   Date: string;

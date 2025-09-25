@@ -1,13 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AttendanceTime, WorkType } from './attendance-logs.enums';
 
-@Schema(
-  {
-    timestamps: true,
-    collection: 'attendance-logs',
-    versionKey: false,
-  },
-)
+@Schema({
+  timestamps: true,
+  collection: 'attendance-logs',
+  versionKey: false,
+})
 export class AttendanceLog {
   @Prop({ type: String, required: true })
   date: string;
