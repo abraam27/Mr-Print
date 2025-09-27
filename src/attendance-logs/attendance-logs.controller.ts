@@ -6,17 +6,19 @@ import {
   Post,
   Put,
   Body,
+  Query,
 } from '@nestjs/common';
 import { CreateAttendanceLogDto } from './dtos/create-attendance-log.dto';
 import { UpdateAttendanceLogDto } from './dtos/update-attendance-log.dto';
 import { AttendanceLogsService } from './services/attendance-logs.service';
+import { QueryAttendanceLogDto } from './dtos/get-attendance-logs.dto';
 
 @Controller('attendance-logs')
 export class AttendanceController {
   constructor(private readonly usersService: AttendanceLogsService) {}
   @Get('')
-  public getAttendanceLogs() {
-    return this.usersService.getAttendanceLogs();
+  public getAttendanceLogs(@Query() query: QueryAttendanceLogDto) {
+    return this.usersService.getAttendanceLogs(query);
   }
 
   @Get('/:id')

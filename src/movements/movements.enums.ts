@@ -1,5 +1,12 @@
+export enum MovementType {
+  Income = 'income',
+  Expense = 'expense',
+}
 export enum ExpenseCategory {
   Salaries = 'Salaries',
+  Profit = 'Profit',
+  Given = 'Given',
+  Saving = 'Saving',
   Papers = 'Papers',
   Ink = 'Ink',
   Maintenance = 'Maintenance',

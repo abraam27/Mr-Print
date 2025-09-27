@@ -30,7 +30,7 @@ export class User {
   @Prop({ type: String, required: false })
   employeeId?: string;
 
-  @Prop({ type: Number, required: false, default: 0.1 })
+  @Prop({ type: Number, required: false })
   employeePercentage?: number;
 
   @Prop({ type: Date, default: Date.now })

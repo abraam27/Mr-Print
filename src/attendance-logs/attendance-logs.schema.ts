@@ -7,8 +7,8 @@ import { AttendanceTime, WorkType } from './attendance-logs.enums';
   versionKey: false,
 })
 export class AttendanceLog {
-  @Prop({ type: String, required: true })
-  date: string;
+  @Prop({ type: Date, required: true })
+  date: Date;
 
   @Prop({ type: String, enum: AttendanceTime, required: true })
   time: AttendanceTime;

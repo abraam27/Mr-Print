@@ -3,11 +3,11 @@ import { AttendanceController } from './attendance-logs.controller';
 import { AttendanceLogsService } from './services/attendance-logs.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AttendanceLog, AttendanceLogSchema } from './attendance-logs.schema';
-import { UsersModule } from '../users/users.module';
+import { CreateAttendanceLogService } from './services/create-attendance-log.service';
 
 @Module({
   controllers: [AttendanceController],
-  providers: [AttendanceLogsService],
+  providers: [AttendanceLogsService, CreateAttendanceLogService],
   exports: [AttendanceLogsService],
   imports: [
     MongooseModule.forFeature([
@@ -18,4 +18,4 @@ import { UsersModule } from '../users/users.module';
     ]),
   ],
 })
-export class AttendanceModule {}
+export class AttendanceLogsModule {}

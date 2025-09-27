@@ -3,19 +3,19 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AttendanceModule } from './attendance-logs/attendance-logs.module';
 import { TransactionsModule } from './transactions/transactions.module';
-import { ExpensesModule } from './expenses/expenses.module';
-
+import { MovementsModule } from './movements/movements.module';
+import { AttendanceLogsModule } from './attendance-logs/attendance-logs.module';
+import { forwardRef } from '@nestjs/common';
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://127.0.0.1:27017/', {
       dbName: 'Mr-Print',
     }),
     UsersModule,
-    AttendanceModule,
+    forwardRef(() => AttendanceLogsModule),
     TransactionsModule,
-    ExpensesModule,
+    MovementsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

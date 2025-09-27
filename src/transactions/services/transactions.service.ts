@@ -4,12 +4,14 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateTransactionDto } from '../dtos/create-transaction.dto';
 import { UpdateTransactionDto } from '../dtos/update-transaction.dto';
+import { CreateTransactionService } from './create-transaction.service';
 
 @Injectable()
 export class TransactionsService {
   constructor(
     @InjectModel(Transaction.name)
     private readonly userModel: Model<Transaction>,
+    private readonly createTransactionService: CreateTransactionService,
   ) {}
 
   async getTransactions(): Promise<Transaction[]> {
@@ -23,7 +25,7 @@ export class TransactionsService {
   async createTransaction(
     transaction: CreateTransactionDto,
   ): Promise<Transaction> {
-    return await this.userModel.create(transaction);
+    return await this.createTransactionService.createTransaction(transaction);
   }
 
   async updateTransaction(

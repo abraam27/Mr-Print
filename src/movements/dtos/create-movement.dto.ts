@@ -7,12 +7,15 @@ import {
   IsString,
   Min,
 } from 'class-validator';
-import { ExpenseCategory } from '../expenses.enums';
+import { MovementType, ExpenseCategory } from '../movements.enums';
 
-export class CreateExpenseDto {
+export class CreateMovementDto {
   @IsString()
   @IsNotEmpty()
   date: string;
+
+  @IsEnum(MovementType)
+  type: MovementType;
 
   @IsOptional()
   @IsString()

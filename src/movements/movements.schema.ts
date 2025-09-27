@@ -1,14 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ExpenseCategory } from './expenses.enums';
+import { ExpenseCategory, MovementType } from './movements.enums';
 
 @Schema({
   timestamps: true,
-  collection: 'expenses',
+  collection: 'movements',
   versionKey: false,
 })
-export class Expense {
+export class Movement {
   @Prop({ type: String, required: true })
-  Date: string;
+  date: string;
+
+  @Prop({ type: String, enum: MovementType, required: true })
+  type: string;
 
   @Prop({ type: String, required: false })
   ownerId: string;
@@ -35,4 +38,4 @@ export class Expense {
   updatedAt: Date;
 }
 
-export const ExpenseSchema = SchemaFactory.createForClass(Expense);
+export const MovementSchema = SchemaFactory.createForClass(Movement);

@@ -16,19 +16,19 @@ export class UsersService {
     return await this.userModel.find();
   }
 
-  getUserById(id: string): Promise<User | null> {
+  getUserById(id: string) {
     return this.userModel.findById(id);
   }
 
-  async createUser(user: CreateUserDto): Promise<User> {
+  async createUser(user: CreateUserDto) {
     return await this.userModel.create(user);
   }
 
-  async updateUser(id: string, user: UpdateUserDto): Promise<User | null> {
+  async updateUser(id: string, user: UpdateUserDto) {
     return await this.userModel.findByIdAndUpdate(id, user, { new: true });
   }
 
-  async deleteUser(id: string): Promise<User | null> {
+  async deleteUser(id: string) {
     return await this.userModel.findByIdAndDelete(id);
   }
 }

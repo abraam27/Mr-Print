@@ -49,9 +49,6 @@ export class Transaction {
   @Prop({ type: Number, required: false })
   grossProfit: number;
 
-  @Prop({ type: String, required: true })
-  password: string;
-
   @Prop({ type: Number, required: false })
   employeeCommission: number;
 
