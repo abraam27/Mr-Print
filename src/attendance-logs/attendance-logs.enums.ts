@@ -1,9 +1,10 @@
 export enum WorkType {
-  HalfShift = 'half shift',
   Shift = 'shift',
+  NightShift = 'night shift',
   DoubleShift = 'double shift',
-  tripleShift = 'triple shift',
-  OverTime = 'over time',
+  ShiftPlusNightShift = 'shift plus night shift',
+  TripleShift = 'triple shift',
+  Overtime = 'overtime',
 }
 
 export enum AttendanceTime {

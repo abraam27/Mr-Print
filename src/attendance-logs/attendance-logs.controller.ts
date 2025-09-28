@@ -11,13 +11,13 @@ import {
 import { CreateAttendanceLogDto } from './dtos/create-attendance-log.dto';
 import { UpdateAttendanceLogDto } from './dtos/update-attendance-log.dto';
 import { AttendanceLogsService } from './services/attendance-logs.service';
-import { QueryAttendanceLogDto } from './dtos/get-attendance-logs.dto';
+import { GetAttendanceLogDto } from './dtos/get-attendance-logs.dto';
 
 @Controller('attendance-logs')
 export class AttendanceController {
   constructor(private readonly usersService: AttendanceLogsService) {}
   @Get('')
-  public getAttendanceLogs(@Query() query: QueryAttendanceLogDto) {
+  public getAttendanceLogs(@Query() query: GetAttendanceLogDto) {
     return this.usersService.getAttendanceLogs(query);
   }
 

@@ -3,7 +3,10 @@ export enum PaperType {
   A4 = 'A4',
 }
 
-export const PaperCostMap: Record<PaperType, number> = {
-  [PaperType.A3]: 0.9,
-  [PaperType.A4]: 0.3,
-};
+export enum TransactionStatus {
+  Pending = 'pending',
+  Processing = 'processing',
+  Finished = 'finished',
+  Cancelled = 'cancelled',
+  Received = 'received',
+}

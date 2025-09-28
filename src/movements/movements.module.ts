@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 import { MovementsController } from './movements.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Movement, MovementSchema } from './movements.schema';
-import { MovementsService } from './services/movements.service';
+import { MovementsServices } from './services/index';
 
 @Module({
   controllers: [MovementsController],
-  providers: [MovementsService],
-  exports: [MovementsService],
+  providers: [...MovementsServices],
+  exports: [...MovementsServices],
   imports: [
     MongooseModule.forFeature([
       {

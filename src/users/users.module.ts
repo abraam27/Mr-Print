@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common';
-import { UsersController } from './users.controller';
-import { UsersService } from './services/users.service';
+import { UsersServices } from './services/index';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './users.schema';
 import { AttendanceLogsModule } from '../attendance-logs/attendance-logs.module';
 import { TransactionsModule } from '../transactions/transactions.module';
+import { forwardRef } from '@nestjs/common';
+import { usersController } from './controllers';
 @Module({
-  controllers: [UsersController],
-  providers: [UsersService],
-  exports: [UsersService],
+  controllers: [...usersController],
+  providers: [...UsersServices],
+  exports: [...UsersServices],
   imports: [
     MongooseModule.forFeature([
       {
@@ -16,8 +17,8 @@ import { TransactionsModule } from '../transactions/transactions.module';
         schema: UserSchema,
       },
     ]),
-    AttendanceLogsModule,
+    forwardRef(() => AttendanceLogsModule),
     TransactionsModule,
   ],
 })
-export class UsersModule {}
+export class UsersModule { }

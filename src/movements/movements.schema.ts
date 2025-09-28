@@ -11,22 +11,22 @@ export class Movement {
   date: string;
 
   @Prop({ type: String, enum: MovementType, required: true })
-  type: string;
+  type: MovementType;
 
   @Prop({ type: String, required: false })
   ownerId: string;
 
-  @Prop({ type: Boolean, default: false, required: true })
+  @Prop({ type: Boolean, default: false })
   isShop: boolean;
 
-  @Prop({ type: Boolean, default: false, required: true })
-  isCustomers: boolean;
+  @Prop({ type: Boolean, default: false })
+  isCustomer: boolean;
 
   @Prop({ type: String, enum: ExpenseCategory, required: true })
-  category: ExpenseCategory;
+  expenseCategory: ExpenseCategory;
 
   @Prop({ type: String, required: false })
-  subCategory: string;
+  userId: string; // expense employee id for salaries and income customer id for payments
 
   @Prop({ type: Number, required: true })
   amount: number;

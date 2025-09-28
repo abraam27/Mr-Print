@@ -1,6 +1,6 @@
 import { CreateTransactionDto } from '../dtos/create-transaction.dto';
 import { UsersService } from 'src/users/services/users.service';
-import { PaperCostMap } from '../transactions.enums';
+import { PaperCostMap } from '../transactions.constants';
 
 export class PrepareTransactionService {
   constructor(private readonly usersService: UsersService) {}

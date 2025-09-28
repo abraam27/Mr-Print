@@ -6,7 +6,7 @@ import { CreateAttendanceLogDto } from '../dtos/create-attendance-log.dto';
 import { UpdateAttendanceLogDto } from '../dtos/update-attendance-log.dto';
 import { CreateAttendanceLogService } from './create-attendance-log.service';
 import { GetAttendanceLogsService } from './get-attendance-logs.service';
-import { QueryAttendanceLogDto } from '../dtos/get-attendance-logs.dto';
+import { GetAttendanceLogDto } from '../dtos/get-attendance-logs.dto';
 
 @Injectable()
 export class AttendanceLogsService {
@@ -17,12 +17,12 @@ export class AttendanceLogsService {
     private readonly createAttendanceLogService: CreateAttendanceLogService,
   ) {}
 
-  async getAttendanceLogs(query: QueryAttendanceLogDto) {
+  async getAttendanceLogs(query: GetAttendanceLogDto) {
     return await this.getAttendanceLogsService.getAttendanceLogs(query);
   }
 
-  getAttendanceLogById(id: string) {
-    return this.userModel.findById(id);
+  async getAttendanceLogById(id: string) {
+    return await this.userModel.findById(id);
   }
 
   async createAttendanceLog(user: CreateAttendanceLogDto) {

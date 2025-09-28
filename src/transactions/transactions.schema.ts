@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { PaperType } from './transactions.enums';
+import { PaperType, TransactionStatus } from './transactions.enums';
 
 @Schema({
   timestamps: true,
@@ -43,17 +43,8 @@ export class Transaction {
   @Prop({ type: Number, required: false })
   expectedPaid: number;
 
-  @Prop({ type: Number, required: false })
-  paid: number;
-
-  @Prop({ type: Number, required: false })
-  grossProfit: number;
-
-  @Prop({ type: Number, required: false })
-  employeeCommission: number;
-
-  @Prop({ type: Number, required: false })
-  netProfit: number;
+  @Prop({ type: String, enum: TransactionStatus, required: false })
+  status: TransactionStatus;
 
   @Prop({ type: String, required: false })
   comment: string;

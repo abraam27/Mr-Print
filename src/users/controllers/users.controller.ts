@@ -6,10 +6,11 @@ import {
   Post,
   Put,
   Body,
+  Query,
 } from '@nestjs/common';
-import { UsersService } from './services/users.service';
-import { CreateUserDto } from './dtos/create-user.dto';
-import { UpdateUserDto } from './dtos/update-user.dto';
+import { UsersService } from '../services/users.service';
+import { CreateUserDto } from '../dtos/create-user.dto';
+import { UpdateUserDto } from '../dtos/update-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -40,5 +41,10 @@ export class UsersController {
   @Delete('/:id')
   public deleteUser(@Param('id') id: string) {
     return this.usersService.deleteUser(id);
+  }
+
+  @Get('salary/:userId')
+  public calculateSalary(@Param('userId') userId: string, @Query('month') month: string, @Query('year') year: string) {
+    return this.usersService.calculateSalary(userId, month, year);
   }
 }

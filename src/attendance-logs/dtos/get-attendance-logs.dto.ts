@@ -9,7 +9,7 @@ import { Type } from 'class-transformer';
 import { AttendanceTime } from '../attendance-logs.enums';
 import { WorkType } from '../attendance-logs.enums';
 
-export class QueryAttendanceLogDto {
+export class GetAttendanceLogDto {
   @IsOptional()
   @IsDateString()
   startDate?: string; // e.g. filter from this date (inclusive)

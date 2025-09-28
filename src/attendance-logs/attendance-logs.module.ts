@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AttendanceController } from './attendance-logs.controller';
-import { AttendanceLogsService } from './services/attendance-logs.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AttendanceLog, AttendanceLogSchema } from './attendance-logs.schema';
-import { CreateAttendanceLogService } from './services/create-attendance-log.service';
-
+import { AttendanceLogsServices } from './services/index';
+import { UsersModule } from '../users/users.module';
+import { forwardRef } from '@nestjs/common';
 @Module({
   controllers: [AttendanceController],
-  providers: [AttendanceLogsService, CreateAttendanceLogService],
-  exports: [AttendanceLogsService],
+  providers: [...AttendanceLogsServices],
+  exports: [...AttendanceLogsServices],
   imports: [
     MongooseModule.forFeature([
       {
@@ -16,6 +16,7 @@ import { CreateAttendanceLogService } from './services/create-attendance-log.ser
         schema: AttendanceLogSchema,
       },
     ]),
+    forwardRef(() => UsersModule),
   ],
 })
-export class AttendanceLogsModule {}
+export class AttendanceLogsModule { }

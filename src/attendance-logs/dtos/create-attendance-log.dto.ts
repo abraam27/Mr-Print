@@ -6,23 +6,15 @@ import {
   IsString,
 } from 'class-validator';
 import { AttendanceTime, WorkType } from '../attendance-logs.enums';
-import { Transform } from 'class-transformer';
 
 export class CreateAttendanceLogDto {
   @IsNotEmpty()
-  @Transform(({ value }) => {
-    const [day, month, year] = value.split('/');
-    return new Date(`${year}-${month}-${day}T00:00:00Z`);
-  })
-  date: Date;
+  @IsString()
+  date: string;
 
   @IsNotEmpty()
   @IsEnum(AttendanceTime)
   time: AttendanceTime;
-
-  @IsBoolean()
-  @IsOptional()
-  isHoliday: boolean;
 
   @IsNotEmpty()
   @IsEnum(WorkType)
