@@ -10,7 +10,7 @@ import { Type } from 'class-transformer';
 import { MovementType } from '../movements.enums';
 import { ExpenseCategory } from '../movements.enums';
 
-export class QueryMovementDto {
+export class GetMovementDto {
   @IsOptional()
   @IsDateString()
   startDate?: string;

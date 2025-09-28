@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Movement } from '../movements.schema';
-import { QueryMovementDto } from '../dtos/query-movements.dto';
+import { GetMovementDto } from '../dtos/get-movements.dto';
 import { FilterQuery } from 'mongoose';
 
 @Injectable()
@@ -12,12 +12,12 @@ export class GetMovementsService {
     private readonly MovementModel: Model<Movement>,
   ) {}
 
-  async getMovements(query: QueryMovementDto) {
+  async getMovements(query: GetMovementDto) {
     const { filter, options } = this.buildFilterFromQuery(query);
     return await this.MovementModel.find(filter, null, options).exec();
   }
 
-  buildFilterFromQuery(query: QueryMovementDto): {
+  buildFilterFromQuery(query: GetMovementDto): {
     filter: FilterQuery<Movement>;
     options: { skip?: number; limit?: number; sort?: any };
   } {
@@ -83,7 +83,7 @@ export class GetMovementsService {
     return { filter, options };
   }
 
-  async findAll(query: QueryMovementDto) {
+  async findAll(query: GetMovementDto) {
     const { filter, options } = this.buildFilterFromQuery(query);
     return this.MovementModel.find(filter, null, options).exec();
   }

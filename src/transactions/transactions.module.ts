@@ -1,20 +1,16 @@
 import { Module } from '@nestjs/common';
 import { TransactionsController } from './transactions.controller';
-import { TransactionsService } from './services/transactions.service';
+import { TransactionsServices } from './services/index';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Transaction, TransactionSchema } from './transactions.schema';
-import { CreateTransactionService } from './services/create-transaction.service';
 import { UsersModule } from 'src/users/users.module';
-import { PrepareTransactionService } from './services/prepare-transaction.services';
 import { forwardRef } from '@nestjs/common';
 @Module({
   controllers: [TransactionsController],
   providers: [
-    TransactionsService,
-    CreateTransactionService,
-    PrepareTransactionService,
+    ...TransactionsServices,
   ],
-  exports: [TransactionsService],
+  exports: [...TransactionsServices],
   imports: [
     MongooseModule.forFeature([
       {

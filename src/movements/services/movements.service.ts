@@ -5,7 +5,7 @@ import { Movement } from '../movements.schema';
 import { CreateMovementDto } from '../dtos/create-movement.dto';
 import { UpdateMovementDto } from '../dtos/update-movement.dto';
 import { GetMovementsService } from './get-movements.service';
-import { QueryMovementDto } from '../dtos/query-movements.dto';
+import { GetMovementDto } from '../dtos/get-movements.dto';
 
 @Injectable()
 export class MovementsService {
@@ -15,7 +15,7 @@ export class MovementsService {
     private readonly getMovementsService: GetMovementsService,
   ) {}
 
-  async getMovements(query: QueryMovementDto) {
+  async getMovements(query: GetMovementDto) {
     return await this.getMovementsService.getMovements(query);
   }
 

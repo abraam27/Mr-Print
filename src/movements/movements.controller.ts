@@ -11,14 +11,14 @@ import {
 import { MovementsService } from './services/movements.service';
 import { CreateMovementDto } from './dtos/create-movement.dto';
 import { UpdateMovementDto } from './dtos/update-movement.dto';
-import { QueryMovementDto } from './dtos/query-movements.dto';
+import { GetMovementDto } from './dtos/get-movements.dto';
 
 @Controller('movements')
 export class MovementsController {
   constructor(private readonly movementsService: MovementsService) {}
 
   @Get('')
-  public getMovements(@Query() query: QueryMovementDto) {
+  public getMovements(@Query() query: GetMovementDto) {
     return this.movementsService.getMovements(query);
   }
 
