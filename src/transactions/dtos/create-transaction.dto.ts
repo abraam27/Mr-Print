@@ -11,7 +11,7 @@ import { PaperType } from '../transactions.enums';
 export class CreateTransactionDto {
   @IsString()
   @IsNotEmpty()
-  Date: string;
+  date: string;
 
   @IsString()
   @IsOptional()

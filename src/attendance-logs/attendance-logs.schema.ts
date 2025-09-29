@@ -10,8 +10,15 @@ export class AttendanceLog {
   @Prop({ type: String, required: true })
   id: string;
 
-  @Prop({ type: String, required: true })
-  date: string;
+  @Prop({
+    type: Date,
+    required: true,
+    get: (date: Date) => {
+      if (!date) return null;
+      return new Date(date).toLocaleDateString('en-GB');
+    },
+  })
+  date: Date;
 
   @Prop({ type: String, enum: AttendanceTime, required: true })
   time: AttendanceTime;

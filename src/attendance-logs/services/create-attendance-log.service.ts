@@ -20,6 +20,7 @@ export class CreateAttendanceLogService {
     const dayOfWeek = getWeekday(createAttendanceLogDto.date);
     const attendanceLog = {
       ...createAttendanceLogDto,
+      date: new Date(createAttendanceLogDto.date),
       isHoliday: dayOfWeek === 'Friday',
     };
     return this.userModel.findOneAndUpdate({ id }, attendanceLog, {

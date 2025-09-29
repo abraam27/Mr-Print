@@ -7,7 +7,14 @@ import { ExpenseCategory, MovementType } from './movements.enums';
   versionKey: false,
 })
 export class Movement {
-  @Prop({ type: String, required: true })
+  @Prop({
+    type: String,
+    required: true,
+    get: (date: Date) => {
+      if (!date) return null;
+      return new Date(date).toLocaleDateString('en-GB');
+    },
+  })
   date: string;
 
   @Prop({ type: String, enum: MovementType, required: true })

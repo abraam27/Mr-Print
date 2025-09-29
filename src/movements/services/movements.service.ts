@@ -24,7 +24,10 @@ export class MovementsService {
   }
 
   async createMovement(movement: CreateMovementDto) {
-    return await this.MovementModel.create(movement);
+    return await this.MovementModel.create({
+      ...movement,
+      date: new Date(movement.date),
+    });
   }
 
   async updateMovement(id: string, movement: UpdateMovementDto) {

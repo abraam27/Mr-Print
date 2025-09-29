@@ -85,6 +85,7 @@ export class PrepareTransactionService {
   ) {
     return {
       ...transaction,
+      date: new Date(transaction.date),
       employeePercentage: customer?.employeePercentage ?? null,
       paperCost: PaperCostMap[transaction.paperType],
       totalCost,

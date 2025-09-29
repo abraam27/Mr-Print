@@ -7,8 +7,15 @@ import { PaperType, TransactionStatus } from './transactions.enums';
   versionKey: false,
 })
 export class Transaction {
-  @Prop({ type: String, required: true })
-  Date: string;
+  @Prop({
+    type: String,
+    required: true,
+    get: (date: Date) => {
+      if (!date) return null;
+      return new Date(date).toLocaleDateString('en-GB');
+    },
+  })
+  date: string;
 
   @Prop({ type: String, required: false })
   customerId: string;
