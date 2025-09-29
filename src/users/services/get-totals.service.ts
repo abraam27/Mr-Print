@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '../users.schema';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
 import { GetAttendanceLogsService } from 'src/attendance-logs/services/get-attendance-logs.service';
 import { filterLogsByMonthYear } from 'src/common/helpers/date-format.helpers';
-import { EmployeeShiftCostMap, OwnerShiftCostMap } from 'src/attendance-logs/attendance-logs.constants';
+import {
+  EmployeeShiftCostMap,
+  OwnerShiftCostMap,
+} from 'src/attendance-logs/attendance-logs.constants';
 import { GetMovementsService } from 'src/movements/services/get-movements.service';
 import { GetUserByIdService } from 'src/users/services/get-user-by-id.service';
 import { UserRole } from 'src/users/users.enums';
@@ -17,16 +17,24 @@ export class GetTotalsService {
     private readonly getAttendanceLogsService: GetAttendanceLogsService,
     private readonly getMovementsService: GetMovementsService,
     private readonly getTransactionsService: GetTransactionsService,
-  ) { }
+  ) {}
 
   async calculateSalary(userId: string, month: string, year: string) {
     const employee = await this.getUserByIdService.getUserById(userId);
-    const attendanceLogs = await this.getAttendanceLogsService.getAttendanceLogs({
-      userId: userId,
-    });
-    const filteredLogsByMonthYear = filterLogsByMonthYear(attendanceLogs, Number(month), Number(year));
-    const logsWithCost = filteredLogsByMonthYear.map(log => {
-      const baseCost = employee?.role == UserRole.Owner ? OwnerShiftCostMap[log.workType] : EmployeeShiftCostMap[log.workType] ?? 0;
+    const attendanceLogs =
+      await this.getAttendanceLogsService.getAttendanceLogs({
+        userId: userId,
+      });
+    const filteredLogsByMonthYear = filterLogsByMonthYear(
+      attendanceLogs,
+      Number(month),
+      Number(year),
+    );
+    const logsWithCost = filteredLogsByMonthYear.map((log) => {
+      const baseCost =
+        employee?.role == UserRole.Owner
+          ? OwnerShiftCostMap[log.workType]
+          : (EmployeeShiftCostMap[log.workType] ?? 0);
       const cost = log.isHoliday ? baseCost * 2 : baseCost;
       return { ...log, cost };
     });
@@ -39,8 +47,15 @@ export class GetTotalsService {
     const movements = await this.getMovementsService.getMovements({
       ownerId: ownerId,
     });
-    const filteredMovementsByMonthYear = filterLogsByMonthYear(movements, Number(month), Number(year));
-    const total = filteredMovementsByMonthYear.reduce((sum, movement) => sum + movement.amount, 0);
+    const filteredMovementsByMonthYear = filterLogsByMonthYear(
+      movements,
+      Number(month),
+      Number(year),
+    );
+    const total = filteredMovementsByMonthYear.reduce(
+      (sum, movement) => sum + movement.amount,
+      0,
+    );
     return total;
   }
 
@@ -48,7 +63,11 @@ export class GetTotalsService {
     const transactions = await this.getTransactionsService.getTransactions({
       employeeId: employeeId,
     });
-    const filteredTransactionsByMonthYear = filterLogsByMonthYear(transactions, Number(month), Number(year));
+    const filteredTransactionsByMonthYear = filterLogsByMonthYear(
+      transactions,
+      Number(month),
+      Number(year),
+    );
     const commissions = filteredTransactionsByMonthYear.map((transaction) => {
       const employeePercentage = transaction.employeePercentage / 100;
       const profit = transaction.totalPapersSales - transaction.totalCost;

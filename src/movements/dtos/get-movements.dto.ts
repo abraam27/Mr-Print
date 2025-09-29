@@ -72,4 +72,9 @@ export class GetMovementDto {
   @IsOptional()
   @IsString()
   sortOrder?: 'asc' | 'desc';
+
+  @IsOptional()
+  @Type(() => Boolean)
+  @IsBoolean()
+  pagination?: boolean;
 }

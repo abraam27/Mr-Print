@@ -14,10 +14,10 @@ export class GetMovementsService {
 
   async getMovements(query: GetMovementDto) {
     const { filter, options } = this.buildFilterFromQuery(query);
-    return await this.MovementModel.find(filter, null, options).exec();
+    return this.MovementModel.find(filter, null, options).exec();
   }
 
-  buildFilterFromQuery(query: GetMovementDto): {
+  private buildFilterFromQuery(query: GetMovementDto): {
     filter: FilterQuery<Movement>;
     options: { skip?: number; limit?: number; sort?: any };
   } {
@@ -67,10 +67,13 @@ export class GetMovementsService {
       }
     }
 
-    const page = query.page ?? 1;
-    const limit = query.limit ?? 20;
-    options.skip = (page - 1) * limit;
-    options.limit = limit;
+    // ✅ Only apply pagination if needed
+    if (query.pagination) {
+      const page = query.page ?? 1;
+      const limit = query.limit ?? 20;
+      options.skip = (page - 1) * limit;
+      options.limit = limit;
+    }
 
     if (query.sortBy) {
       options.sort = {
@@ -81,10 +84,5 @@ export class GetMovementsService {
     }
 
     return { filter, options };
-  }
-
-  async findAll(query: GetMovementDto) {
-    const { filter, options } = this.buildFilterFromQuery(query);
-    return this.MovementModel.find(filter, null, options).exec();
   }
 }

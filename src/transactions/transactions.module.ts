@@ -7,9 +7,7 @@ import { UsersModule } from 'src/users/users.module';
 import { forwardRef } from '@nestjs/common';
 @Module({
   controllers: [TransactionsController],
-  providers: [
-    ...TransactionsServices,
-  ],
+  providers: [...TransactionsServices],
   exports: [...TransactionsServices],
   imports: [
     MongooseModule.forFeature([

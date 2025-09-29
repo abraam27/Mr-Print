@@ -8,7 +8,10 @@ import { filterLogsByMonthYear } from 'src/common/helpers/date-format.helpers';
 import { GetUserByIdService } from './get-user-by-id.service';
 import { GetAttendanceLogsService } from 'src/attendance-logs/services/get-attendance-logs.service';
 import { UserRole } from '../users.enums';
-import { OwnerShiftCostMap, EmployeeShiftCostMap } from 'src/attendance-logs/attendance-logs.constants';
+import {
+  OwnerShiftCostMap,
+  EmployeeShiftCostMap,
+} from 'src/attendance-logs/attendance-logs.constants';
 
 @Injectable()
 export class UsersService {
@@ -17,7 +20,7 @@ export class UsersService {
     private readonly userModel: Model<User>,
     private readonly getAttendanceLogsService: GetAttendanceLogsService,
     private readonly getUserByIdService: GetUserByIdService,
-  ) { }
+  ) {}
 
   async getUsers(): Promise<User[]> {
     return await this.userModel.find();
@@ -41,16 +44,24 @@ export class UsersService {
 
   async calculateSalary(userId: string, month: string, year: string) {
     const employee = await this.getUserByIdService.getUserById(userId);
-    const attendanceLogs = await this.getAttendanceLogsService.getAttendanceLogs({
-      userId: userId,
-    });
-    const filteredLogsByMonthYear = filterLogsByMonthYear(attendanceLogs, Number(month), Number(year));
+    const attendanceLogs =
+      await this.getAttendanceLogsService.getAttendanceLogs({
+        userId: userId,
+      });
+    const filteredLogsByMonthYear = filterLogsByMonthYear(
+      attendanceLogs,
+      Number(month),
+      Number(year),
+    );
     return this.calculateTotalSalary(filteredLogsByMonthYear, employee?.role);
   }
 
   private calculateTotalSalary(logs: any[], role: UserRole | undefined) {
-    const logsWithCost = logs.map(log => {
-      const baseCost = role == UserRole.Owner ? OwnerShiftCostMap[log.workType] : EmployeeShiftCostMap[log.workType] ?? 0;
+    const logsWithCost = logs.map((log) => {
+      const baseCost =
+        role == UserRole.Owner
+          ? OwnerShiftCostMap[log.workType]
+          : (EmployeeShiftCostMap[log.workType] ?? 0);
       const cost = log.isHoliday ? baseCost * 2 : baseCost;
       return { ...log, cost };
     });
@@ -60,22 +71,22 @@ export class UsersService {
   }
 
   calculateOwnersProfit() {
-    return "calculateOwnersProfit";
+    return 'calculateOwnersProfit';
   }
 
   calculateOwnerShifts() {
-    return "calculateOwnerShifts";
+    return 'calculateOwnerShifts';
   }
 
   calculateOwnerExpenses() {
-    return "calculateOwnerExpenses";
+    return 'calculateOwnerExpenses';
   }
 
   calculateEmployeeCommission() {
-    return "calculateEmployeeCommission";
+    return 'calculateEmployeeCommission';
   }
 
   calculateEmployeeOvertime() {
-    return "calculateEmployeeOvertime";
+    return 'calculateEmployeeOvertime';
   }
 }

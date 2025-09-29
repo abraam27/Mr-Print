@@ -5,8 +5,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { CreateAttendanceLogDto } from '../dtos/create-attendance-log.dto';
 import { UpdateAttendanceLogDto } from '../dtos/update-attendance-log.dto';
 import { CreateAttendanceLogService } from './create-attendance-log.service';
-import { GetAttendanceLogsService } from './get-attendance-logs.service';
 import { GetAttendanceLogDto } from '../dtos/get-attendance-logs.dto';
+import { GetAttendanceLogsService } from './get-attendance-logs.service';
 
 @Injectable()
 export class AttendanceLogsService {

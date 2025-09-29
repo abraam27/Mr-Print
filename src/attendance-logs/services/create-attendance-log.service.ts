@@ -11,17 +11,20 @@ export class CreateAttendanceLogService {
   constructor(
     @InjectModel(AttendanceLog.name)
     private readonly userModel: Model<AttendanceLog>,
-  ) { }
+  ) {}
 
-  async createAttendanceLog(
-    createAttendanceLogDto: CreateAttendanceLogDto,
-  ) {
-    const id = UUID(`${createAttendanceLogDto.userId}-${createAttendanceLogDto.date}-${createAttendanceLogDto.time}`);
+  async createAttendanceLog(createAttendanceLogDto: CreateAttendanceLogDto) {
+    const id = UUID(
+      `${createAttendanceLogDto.userId}-${createAttendanceLogDto.date}-${createAttendanceLogDto.time}`,
+    );
     const dayOfWeek = getWeekday(createAttendanceLogDto.date);
     const attendanceLog = {
       ...createAttendanceLogDto,
       isHoliday: dayOfWeek === 'Friday',
     };
-    return this.userModel.findOneAndUpdate({ id }, attendanceLog, { upsert: true, new: true });
+    return this.userModel.findOneAndUpdate({ id }, attendanceLog, {
+      upsert: true,
+      new: true,
+    });
   }
 }

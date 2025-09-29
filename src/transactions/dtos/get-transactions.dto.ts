@@ -1,4 +1,10 @@
-import { IsOptional, IsString, IsEnum, IsBoolean, IsNumber } from 'class-validator';
+import {
+  IsOptional,
+  IsString,
+  IsEnum,
+  IsBoolean,
+  IsNumber,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { PaperType } from '../transactions.enums';
 import { TransactionStatus } from '../transactions.enums';
@@ -51,9 +57,30 @@ export class GetTransactionDto {
 
   @IsOptional()
   @IsString()
-  toDate?: string;   // e.g. "2025-09-30"
+  toDate?: string; // e.g. "2025-09-30"
 
   @IsOptional()
   @IsString()
   comment?: string;
+
+  @IsOptional()
+  @Type(() => Number)
+  page?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  limit?: number;
+
+  @IsOptional()
+  @Type(() => Boolean)
+  @IsBoolean()
+  pagination?: boolean;
+
+  @IsOptional()
+  @IsString()
+  sortBy?: string;
+
+  @IsOptional()
+  @IsString()
+  sortOrder?: 'asc' | 'desc';
 }

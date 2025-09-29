@@ -1,7 +1,4 @@
-import { UsersController } from "./users.controller";
-import { OwnersController } from "./owners.controller";
+import { UsersController } from './users.controller';
+import { OwnersController } from './owners.controller';
 
-export const usersController = [
-    UsersController,
-    OwnersController
-]
+export const usersController = [UsersController, OwnersController];

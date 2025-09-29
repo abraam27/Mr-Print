@@ -10,7 +10,7 @@ export class EmployeesService {
   constructor(
     @InjectModel(User.name)
     private readonly userModel: Model<User>,
-  ) { }
+  ) {}
 
   async getUsers(): Promise<User[]> {
     return await this.userModel.find();
@@ -33,22 +33,22 @@ export class EmployeesService {
   }
 
   calculateOwnersProfit() {
-    return "calculateOwnersProfit";
+    return 'calculateOwnersProfit';
   }
 
   calculateOwnerShifts() {
-    return "calculateOwnerShifts";
+    return 'calculateOwnerShifts';
   }
 
   calculateOwnerExpenses() {
-    return "calculateOwnerExpenses";
+    return 'calculateOwnerExpenses';
   }
 
   calculateEmployeeCommission() {
-    return "calculateEmployeeCommission";
+    return 'calculateEmployeeCommission';
   }
 
   calculateEmployeeOvertime() {
-    return "calculateEmployeeOvertime";
+    return 'calculateEmployeeOvertime';
   }
 }

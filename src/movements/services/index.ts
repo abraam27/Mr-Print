@@ -1,7 +1,4 @@
-import { MovementsService } from "./movements.service";
-import { GetMovementsService } from "./get-movements.service";
+import { MovementsService } from './movements.service';
+import { GetMovementsService } from './get-movements.service';
 
-export const MovementsServices = [
-    MovementsService,
-    GetMovementsService,
-]
+export const MovementsServices = [MovementsService, GetMovementsService];

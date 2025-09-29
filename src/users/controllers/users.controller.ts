@@ -44,7 +44,11 @@ export class UsersController {
   }
 
   @Get('salary/:userId')
-  public calculateSalary(@Param('userId') userId: string, @Query('month') month: string, @Query('year') year: string) {
+  public calculateSalary(
+    @Param('userId') userId: string,
+    @Query('month') month: string,
+    @Query('year') year: string,
+  ) {
     return this.usersService.calculateSalary(userId, month, year);
   }
 }

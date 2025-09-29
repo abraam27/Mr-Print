@@ -19,4 +19,4 @@ import { forwardRef } from '@nestjs/common';
     forwardRef(() => UsersModule),
   ],
 })
-export class AttendanceLogsModule { }
+export class AttendanceLogsModule {}

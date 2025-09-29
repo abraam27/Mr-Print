@@ -8,7 +8,7 @@ export class GetUserByIdService {
   constructor(
     @InjectModel(User.name)
     private readonly userModel: Model<User>,
-  ) { }
+  ) {}
 
   getUserById(id: string) {
     return this.userModel.findById(id);
