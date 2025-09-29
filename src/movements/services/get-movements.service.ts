@@ -24,14 +24,21 @@ export class GetMovementsService {
     const filter: FilterQuery<Movement> = {};
     const options: any = {};
 
-    if (query.startDate || query.endDate) {
+    if (query.fromDate || query.toDate) {
       filter.date = {};
-      if (query.startDate) {
-        filter.date.$gte = new Date(query.startDate);
+      if (query.fromDate) {
+        filter.date.$gte = new Date(query.fromDate);
       }
-      if (query.endDate) {
-        filter.date.$lte = new Date(query.endDate);
+      if (query.toDate) {
+        filter.date.$lte = new Date(query.toDate);
       }
+    }
+
+    if (query.month && query.year) {
+      const start = new Date(query.year, query.month - 1, 1);
+      const end = new Date(query.year, query.month, 0, 23, 59, 59, 999);
+
+      filter.date = { $gte: start, $lte: end };
     }
 
     if (query.type) {
@@ -40,6 +47,10 @@ export class GetMovementsService {
 
     if (query.ownerId) {
       filter.ownerId = query.ownerId;
+    }
+
+    if (query.userId) {
+      filter.userId = query.userId;
     }
 
     if (query.isShop !== undefined) {

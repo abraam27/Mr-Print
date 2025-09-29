@@ -3,7 +3,7 @@ export enum MovementType {
   Expense = 'expense',
 }
 export enum ExpenseCategory {
-  Salaries = 'salaries',
+  Salary = 'salaries',
   Profit = 'profit',
   Given = 'given',
   Saving = 'saving',

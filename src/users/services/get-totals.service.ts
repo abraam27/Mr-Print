@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { GetAttendanceLogsService } from 'src/attendance-logs/services/get-attendance-logs.service';
-import { filterLogsByMonthYear } from 'src/common/helpers/date-format.helpers';
 import {
   EmployeeShiftCostMap,
   OwnerShiftCostMap,
@@ -19,18 +18,15 @@ export class GetTotalsService {
     private readonly getTransactionsService: GetTransactionsService,
   ) {}
 
-  async calculateSalary(userId: string, month: string, year: string) {
+  async calculateSalary(userId: string, month: number, year: number) {
     const employee = await this.getUserByIdService.getUserById(userId);
     const attendanceLogs =
       await this.getAttendanceLogsService.getAttendanceLogs({
-        userId: userId,
+        userId,
+        month,
+        year,
       });
-    const filteredLogsByMonthYear = filterLogsByMonthYear(
-      attendanceLogs,
-      Number(month),
-      Number(year),
-    );
-    const logsWithCost = filteredLogsByMonthYear.map((log) => {
+    const logsWithCost = attendanceLogs.map((log) => {
       const baseCost =
         employee?.role == UserRole.Owner
           ? OwnerShiftCostMap[log.workType]
@@ -43,32 +39,23 @@ export class GetTotalsService {
     return employee?.role == UserRole.Employee ? total + 600 : total;
   }
 
-  async calculateOwnerExpenses(ownerId: string, month: string, year: string) {
+  async calculateOwnerExpenses(ownerId: string, month: number, year: number) {
     const movements = await this.getMovementsService.getMovements({
-      ownerId: ownerId,
+      ownerId,
+      month,
+      year,
     });
-    const filteredMovementsByMonthYear = filterLogsByMonthYear(
-      movements,
-      Number(month),
-      Number(year),
-    );
-    const total = filteredMovementsByMonthYear.reduce(
-      (sum, movement) => sum + movement.amount,
-      0,
-    );
+    const total = movements.reduce((sum, movement) => sum + movement.amount, 0);
     return total;
   }
 
-  async calculateCommission(employeeId: string, month: string, year: string) {
+  async calculateCommission(employeeId: string, month: number, year: number) {
     const transactions = await this.getTransactionsService.getTransactions({
-      employeeId: employeeId,
+      employeeId,
+      month,
+      year,
     });
-    const filteredTransactionsByMonthYear = filterLogsByMonthYear(
-      transactions,
-      Number(month),
-      Number(year),
-    );
-    const commissions = filteredTransactionsByMonthYear.map((transaction) => {
+    const commissions = transactions.map((transaction) => {
       const employeePercentage = transaction.employeePercentage / 100;
       const profit = transaction.totalPapersSales - transaction.totalCost;
       const commission = employeePercentage * profit;

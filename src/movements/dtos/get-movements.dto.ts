@@ -13,11 +13,19 @@ import { ExpenseCategory } from '../movements.enums';
 export class GetMovementDto {
   @IsOptional()
   @IsDateString()
-  startDate?: string;
+  fromDate?: string;
 
   @IsOptional()
   @IsDateString()
-  endDate?: string;
+  toDate?: string;
+
+  @IsOptional()
+  @IsNumber()
+  month?: number;
+
+  @IsOptional()
+  @IsNumber()
+  year?: number;
 
   @IsOptional()
   @IsEnum(MovementType)
@@ -26,6 +34,10 @@ export class GetMovementDto {
   @IsOptional()
   @IsString()
   ownerId?: string;
+
+  @IsOptional()
+  @IsString()
+  userId?: string;
 
   @IsOptional()
   @IsBoolean()

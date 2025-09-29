@@ -32,6 +32,13 @@ export class GetTransactionsService {
       }
     }
 
+    if (query.month && query.year) {
+      const start = new Date(query.year, query.month - 1, 1);
+      const end = new Date(query.year, query.month, 0, 23, 59, 59, 999);
+
+      filter.date = { $gte: start, $lte: end };
+    }
+
     // ✅ Direct filters
     if (query.customerId) filter.customerId = query.customerId;
     if (query.employeeId) filter.employeeId = query.employeeId;

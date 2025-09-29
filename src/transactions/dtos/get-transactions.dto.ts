@@ -53,11 +53,19 @@ export class GetTransactionDto {
 
   @IsOptional()
   @IsString()
-  fromDate?: string; // e.g. "2025-09-01"
+  fromDate?: string;
 
   @IsOptional()
   @IsString()
-  toDate?: string; // e.g. "2025-09-30"
+  toDate?: string;
+
+  @IsOptional()
+  @IsNumber()
+  month?: number;
+
+  @IsOptional()
+  @IsNumber()
+  year?: number;
 
   @IsOptional()
   @IsString()
