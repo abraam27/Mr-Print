@@ -4,10 +4,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './users.schema';
 import { AttendanceLogsModule } from '../attendance-logs/attendance-logs.module';
 import { TransactionsModule } from '../transactions/transactions.module';
+import { MovementsModule } from '../movements/movements.module';
 import { forwardRef } from '@nestjs/common';
-import { usersController } from './controllers';
+import { TotalsModule } from '../totals/totals.module';
+import { UsersController } from './users.controller';
 @Module({
-  controllers: [...usersController],
+  controllers: [UsersController],
   providers: [...UsersServices],
   exports: [...UsersServices],
   imports: [
@@ -18,7 +20,9 @@ import { usersController } from './controllers';
       },
     ]),
     forwardRef(() => AttendanceLogsModule),
-    TransactionsModule,
+    forwardRef(() => TransactionsModule),
+    forwardRef(() => MovementsModule),
+    forwardRef(() => TotalsModule),
   ],
 })
 export class UsersModule {}

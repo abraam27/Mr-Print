@@ -3,7 +3,7 @@ import { AttendanceLog } from '../attendance-logs.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateAttendanceLogDto } from '../dtos/create-attendance-log.dto';
-import { UUID } from 'src/common/helpers/uuid.helpers';
+import { uuid } from 'src/common/helpers/uuid.helpers';
 import { getWeekday } from 'src/common/helpers/date-format.helpers';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class CreateAttendanceLogService {
   ) {}
 
   async createAttendanceLog(createAttendanceLogDto: CreateAttendanceLogDto) {
-    const id = UUID(
+    const id = uuid(
       `${createAttendanceLogDto.userId}-${createAttendanceLogDto.date}-${createAttendanceLogDto.time}`,
     );
     const dayOfWeek = getWeekday(createAttendanceLogDto.date);

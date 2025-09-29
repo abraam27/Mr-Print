@@ -27,7 +27,7 @@ export class UsersService {
   }
 
   getUserById(id: string) {
-    return this.userModel.findById(id);
+    return this.getUserByIdService.getUserById(id);
   }
 
   async createUser(user: CreateUserDto) {
@@ -53,10 +53,10 @@ export class UsersService {
       Number(month),
       Number(year),
     );
-    return this.calculateTotalSalary(filteredLogsByMonthYear, employee?.role);
+    return this.calculateTotalSalary(filteredLogsByMonthYear, employee.role);
   }
 
-  private calculateTotalSalary(logs: any[], role: UserRole | undefined) {
+  private calculateTotalSalary(logs: any[], role: UserRole) {
     const logsWithCost = logs.map((log) => {
       const baseCost =
         role == UserRole.Owner

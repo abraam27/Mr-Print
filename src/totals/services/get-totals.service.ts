@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { GetAttendanceLogsService } from 'src/attendance-logs/services/get-attendance-logs.service';
 import {
   EmployeeShiftCostMap,
@@ -8,10 +8,13 @@ import { GetMovementsService } from 'src/movements/services/get-movements.servic
 import { GetUserByIdService } from 'src/users/services/get-user-by-id.service';
 import { UserRole } from 'src/users/users.enums';
 import { GetTransactionsService } from 'src/transactions/services/get-transactions.service';
+import { ExpenseCategory, MovementType } from 'src/movements/movements.enums';
+import { sumBy } from 'src/common/helpers/sumBy.helper';
 
 @Injectable()
 export class GetTotalsService {
   constructor(
+    @Inject(forwardRef(() => GetUserByIdService))
     private readonly getUserByIdService: GetUserByIdService,
     private readonly getAttendanceLogsService: GetAttendanceLogsService,
     private readonly getMovementsService: GetMovementsService,
@@ -35,18 +38,8 @@ export class GetTotalsService {
       return { ...log, cost };
     });
 
-    const total = logsWithCost.reduce((sum, log) => sum + log.cost, 0);
+    const total = sumBy(logsWithCost, (log) => log.cost);
     return employee?.role == UserRole.Employee ? total + 600 : total;
-  }
-
-  async calculateOwnerExpenses(ownerId: string, month: number, year: number) {
-    const movements = await this.getMovementsService.getMovements({
-      ownerId,
-      month,
-      year,
-    });
-    const total = movements.reduce((sum, movement) => sum + movement.amount, 0);
-    return total;
   }
 
   async calculateCommission(employeeId: string, month: number, year: number) {
@@ -61,6 +54,40 @@ export class GetTotalsService {
       const commission = employeePercentage * profit;
       return commission;
     });
-    return commissions.reduce((sum, commission) => sum + commission, 0);
+    return sumBy(commissions, (commission) => commission);
+  }
+
+  async calculateEmployeePaid(employeeId: string, month: number, year: number) {
+    const movements = await this.getMovementsService.getMovements({
+      type: MovementType.Expense,
+      subCategory: ExpenseCategory.Salary,
+      userId: employeeId,
+      month,
+      year,
+    });
+    const total = sumBy(movements, (movement) => movement.amount);
+    return total;
+  }
+
+  async calculateOwnerExpenses(ownerId: string) {
+    const expenses = await this.getMovementsService.getMovements({
+      type: MovementType.Expense,
+      ownerId,
+      month: 0,
+      year: 0,
+    });
+    const total = sumBy(expenses, (movement) => movement.amount);
+    return total;
+  }
+
+  async calculateOwnerIncome(ownerId: string) {
+    const income = await this.getMovementsService.getMovements({
+      type: MovementType.Income,
+      userId: ownerId,
+      month: 0,
+      year: 0,
+    });
+    const total = sumBy(income, (movement) => movement.amount);
+    return total;
   }
 }

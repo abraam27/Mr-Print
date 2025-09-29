@@ -1,24 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { GetMovementsService } from 'src/movements/services/get-movements.service';
-import { GetUserByIdService } from 'src/users/services/get-user-by-id.service';
 import { GetTransactionsService } from 'src/transactions/services/get-transactions.service';
 import { sumBy } from 'src/common/helpers/sumBy.helper';
+import { MovementType } from 'src/movements/movements.enums';
 
 @Injectable()
 export class GetCustomerTotalsService {
   constructor(
-    private readonly getUserByIdService: GetUserByIdService,
     private readonly getMovementsService: GetMovementsService,
     private readonly getTransactionsService: GetTransactionsService,
   ) {}
 
-  async calculateCustomerTotals(
-    customerId: string,
-    month: number,
-    year: number,
-  ) {
-    const customer = await this.getUserByIdService.getUserById(customerId);
-
+  async getCustomerTotals(customerId: string, month: number, year: number) {
     const transactions = await this.getTransactionsService.getTransactions({
       customerId,
       month,
@@ -26,6 +19,7 @@ export class GetCustomerTotalsService {
     });
 
     const movements = await this.getMovementsService.getMovements({
+      type: MovementType.Income,
       userId: customerId,
       month,
       year,
@@ -43,7 +37,7 @@ export class GetCustomerTotalsService {
     // Calculations
     const difference = totalExpectedPaid - totalActualPaid;
     const totalProfit = totalPapersSales - totalPapersCost;
-    const commissionRate = (customer?.employeePercentage ?? 0.1) / 100;
+    const commissionRate = 0.1 / 100;
     const commission = totalProfit * commissionRate;
     const netProfit = totalProfit + commission;
 
