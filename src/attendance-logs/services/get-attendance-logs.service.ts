@@ -8,12 +8,12 @@ import { GetAttendanceLogDto } from '../dtos/get-attendance-logs.dto';
 export class GetAttendanceLogsService {
   constructor(
     @InjectModel(AttendanceLog.name)
-    private readonly AttendanceLogModel: Model<AttendanceLog>,
+    private readonly attendanceLogModel: Model<AttendanceLog>,
   ) {}
 
   async getAttendanceLogs(query: GetAttendanceLogDto) {
     const { filter, options } = this.buildFilterFromQuery(query);
-    return this.AttendanceLogModel.find(filter, null, options).exec();
+    return await this.attendanceLogModel.find(filter, null, options).exec();
   }
 
   buildFilterFromQuery(query: GetAttendanceLogDto): {

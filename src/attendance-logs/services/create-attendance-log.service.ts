@@ -5,28 +5,36 @@ import { InjectModel } from '@nestjs/mongoose';
 import { CreateAttendanceLogDto } from '../dtos/create-attendance-log.dto';
 import { uuid } from 'src/common/helpers/uuid.helpers';
 import { DateTime } from 'luxon';
+import { GetUserByIdService } from 'src/users/services/get-user-by-id.service';
 
 @Injectable()
 export class CreateAttendanceLogService {
   constructor(
     @InjectModel(AttendanceLog.name)
-    private readonly userModel: Model<AttendanceLog>,
+    private readonly attendanceLogModel: Model<AttendanceLog>,
+    private readonly getUserByIdService: GetUserByIdService,
   ) {}
 
   async createAttendanceLog(createAttendanceLogDto: CreateAttendanceLogDto) {
+    const user = await this.getUserByIdService.getUserById(createAttendanceLogDto.userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
     const id = uuid(
       `${createAttendanceLogDto.userId}-${createAttendanceLogDto.date.toISOString()}-${createAttendanceLogDto.time}`,
     );
-    console.log(createAttendanceLogDto.date);
+
     const dayOfWeek = this.getWeekday(
       createAttendanceLogDto.date.toISOString(),
     );
+
     const attendanceLog = {
       ...createAttendanceLogDto,
       date: new Date(createAttendanceLogDto.date),
       isHoliday: dayOfWeek === 'Friday',
     };
-    return this.userModel.findOneAndUpdate({ id }, attendanceLog, {
+    
+    return this.attendanceLogModel.findOneAndUpdate({ id }, attendanceLog, {
       upsert: true,
       new: true,
     });

@@ -10,7 +10,7 @@ import { TotalsModule } from './totals/totals.module';
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://127.0.0.1:27017/', {
-      dbName: 'Mr-Print',
+      dbName: 'Mr-Print-test',
     }),
     UsersModule,
     AttendanceLogsModule,

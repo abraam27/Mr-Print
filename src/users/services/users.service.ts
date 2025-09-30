@@ -7,6 +7,7 @@ import { UpdateUserDto } from '../dtos/update-user.dto';
 import { GetUserByIdService } from './get-user-by-id.service';
 import { GetUsersDto } from '../dtos/get-users.dto';
 import { GetUsersService } from './get-users.service ';
+import { CreateUserService } from './create-user.service';
 
 @Injectable()
 export class UsersService {
@@ -15,6 +16,7 @@ export class UsersService {
     private readonly userModel: Model<User>,
     private readonly getUserByIdService: GetUserByIdService,
     private readonly getUsersService: GetUsersService,
+    private readonly createUserService: CreateUserService,
   ) {}
 
   async getUsers(query: GetUsersDto) {
@@ -26,7 +28,7 @@ export class UsersService {
   }
 
   async createUser(user: CreateUserDto) {
-    return await this.userModel.create(user);
+    return await this.createUserService.createUser(user);
   }
 
   async updateUser(id: string, user: UpdateUserDto) {
