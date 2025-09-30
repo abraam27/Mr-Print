@@ -14,7 +14,7 @@ export class GetMovementsService {
 
   async getMovements(query: GetMovementDto) {
     const { filter, options } = this.buildFilterFromQuery(query);
-    return this.MovementModel.find(filter, null, options).exec();
+    return this.MovementModel.find(filter, null, options).lean().exec();
   }
 
   private buildFilterFromQuery(query: GetMovementDto): {

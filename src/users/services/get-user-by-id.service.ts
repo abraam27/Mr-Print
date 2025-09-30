@@ -17,11 +17,16 @@ export class GetUserByIdService {
     private readonly getCustomerTotalsService: GetCustomerTotalsService,
   ) {}
 
-  async getUserById(id: string, month: number = 0, year: number = 0) {
-    const user = await this.userModel.findById(id);
+  async getUserById(id: string) {
+    const user = await this.userModel.findById(id).lean().exec();
     if (!user) {
       throw new Error('User not found');
     }
+    return user;
+  }
+
+  async getUserByIdWithTotals(id: string, month: number = 0, year: number = 0) {
+    const user = await this.getUserById(id);
     if (user.role == UserRole.Owner) {
       return {
         ...user,

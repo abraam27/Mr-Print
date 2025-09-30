@@ -8,7 +8,10 @@ import {
   Body,
   Query,
 } from '@nestjs/common';
-import { CreateAttendanceLogDto } from './dtos/create-attendance-log.dto';
+import {
+  CreateAttendanceLogDto,
+  CreateManyAttendanceLogDto,
+} from './dtos/create-attendance-log.dto';
 import { UpdateAttendanceLogDto } from './dtos/update-attendance-log.dto';
 import { AttendanceLogsService } from './services/attendance-logs.service';
 import { GetAttendanceLogDto } from './dtos/get-attendance-logs.dto';
@@ -31,6 +34,15 @@ export class AttendanceController {
     @Body() createAttendanceLogDto: CreateAttendanceLogDto,
   ) {
     return this.usersService.createAttendanceLog(createAttendanceLogDto);
+  }
+
+  @Post('/many')
+  public createManyAttendanceLog(
+    @Body() createManyAttendanceLogDto: CreateManyAttendanceLogDto,
+  ) {
+    return this.usersService.createManyAttendanceLog(
+      createManyAttendanceLogDto,
+    );
   }
 
   @Put('/:id')

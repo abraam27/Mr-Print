@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateAttendanceLogDto } from '../dtos/create-attendance-log.dto';
 import { uuid } from 'src/common/helpers/uuid.helpers';
-import { getWeekday } from 'src/common/helpers/date-format.helpers';
+import { DateTime } from 'luxon';
 
 @Injectable()
 export class CreateAttendanceLogService {
@@ -15,9 +15,12 @@ export class CreateAttendanceLogService {
 
   async createAttendanceLog(createAttendanceLogDto: CreateAttendanceLogDto) {
     const id = uuid(
-      `${createAttendanceLogDto.userId}-${createAttendanceLogDto.date}-${createAttendanceLogDto.time}`,
+      `${createAttendanceLogDto.userId}-${createAttendanceLogDto.date.toISOString()}-${createAttendanceLogDto.time}`,
     );
-    const dayOfWeek = getWeekday(createAttendanceLogDto.date);
+    console.log(createAttendanceLogDto.date);
+    const dayOfWeek = this.getWeekday(
+      createAttendanceLogDto.date.toISOString(),
+    );
     const attendanceLog = {
       ...createAttendanceLogDto,
       date: new Date(createAttendanceLogDto.date),
@@ -27,5 +30,9 @@ export class CreateAttendanceLogService {
       upsert: true,
       new: true,
     });
+  }
+
+  private getWeekday(dateIso: string): string {
+    return DateTime.fromISO(dateIso, { zone: 'utc' }).toFormat('EEEE');
   }
 }

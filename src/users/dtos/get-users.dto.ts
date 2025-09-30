@@ -1,7 +1,7 @@
 import { IsOptional, IsString, IsEnum, IsNumber } from 'class-validator';
 import { UserRole } from '../users.enums';
 
-export class FindUsersDto {
+export class GetUsersDto {
   @IsOptional()
   @IsString()
   firstName?: string;

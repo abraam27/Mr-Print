@@ -3,8 +3,8 @@ import { User } from '../users.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { GetUserByIdService } from './get-user-by-id.service';
-import { FindUsersDto } from '../dtos/get-users.dto';
-import { RootFilterQuery } from 'mongoose';
+import { GetUsersDto } from '../dtos/get-users.dto';
+import { FilterQuery } from 'mongoose';
 
 @Injectable()
 export class GetUsersService {
@@ -14,8 +14,8 @@ export class GetUsersService {
     private readonly getUserByIdService: GetUserByIdService,
   ) {}
 
-  async getUsers(query: FindUsersDto) {
-    const filter: RootFilterQuery<User> = {};
+  async getUsers(query: GetUsersDto) {
+    const filter: FilterQuery<User> = {};
 
     if (query.firstName) {
       filter.firstName = { $regex: query.firstName, $options: 'i' };
@@ -44,17 +44,31 @@ export class GetUsersService {
       filter.date = { $gte: start, $lte: end };
     }
 
-    const users = await this.userModel.find(filter).exec();
+    const users = await this.userModel.find(filter).lean().exec();
     if (!users) {
       throw new Error('Users not found');
     }
-    const usersWithTotals = users.map((user) => {
-      return this.getUserByIdService.getUserById(
-        user._id.toString(),
-        query.month,
-        query.year,
-      );
-    });
+
+    const usersWithTotals = await Promise.all(
+      users.map(async (user) => {
+        const userWithTotals =
+          await this.getUserByIdService.getUserByIdWithTotals(
+            user._id.toString(),
+            query.month,
+            query.year,
+          );
+
+        const employee = user.employeeId
+          ? await this.getUserByIdService.getUserById(user.employeeId)
+          : null;
+
+        return {
+          ...userWithTotals,
+          employee,
+        };
+      }),
+    );
+
     return usersWithTotals;
   }
 }
