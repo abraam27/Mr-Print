@@ -19,7 +19,7 @@ export class PrepareTransactionService {
     );
     const employeeCommission = this.calculateEmployeeCommission(
       grossProfit,
-      customer?.employeePercentage,
+      (customer?.employeePercentage as number) ?? 0.1,
     );
     const netProfit = this.calculateNetProfit(grossProfit, employeeCommission);
 
@@ -58,7 +58,7 @@ export class PrepareTransactionService {
 
   private calculateEmployeeCommission(
     grossProfit: number,
-    employeePercentage?: number,
+    employeePercentage: number,
   ): number {
     return grossProfit && employeePercentage
       ? grossProfit * employeePercentage
@@ -86,7 +86,7 @@ export class PrepareTransactionService {
     return {
       ...transaction,
       date: new Date(transaction.date),
-      employeePercentage: customer?.employeePercentage ?? null,
+      employeePercentage: customer?.employeePercentage ?? 0.1,
       paperCost: PaperCostMap[transaction.paperType],
       totalCost,
       totalPapersSales: totalSales,

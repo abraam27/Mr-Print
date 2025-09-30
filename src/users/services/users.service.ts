@@ -53,7 +53,10 @@ export class UsersService {
       Number(month),
       Number(year),
     );
-    return this.calculateTotalSalary(filteredLogsByMonthYear, employee.role);
+    return this.calculateTotalSalary(
+      filteredLogsByMonthYear,
+      employee.role as UserRole,
+    );
   }
 
   private calculateTotalSalary(logs: any[], role: UserRole) {

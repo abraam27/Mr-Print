@@ -2,12 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { User } from '../users.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { UserRole } from '../users.enums';
-import { GetOwnerTotalsService } from 'src/totals/services/get-owner-totals.service';
-import { GetCustomerTotalsService } from 'src/totals/services/get-customer-totals.service';
-import { GetEmployeeTotalsService } from 'src/totals/services/get-employee-totals.service.';
 import { GetUserByIdService } from './get-user-by-id.service';
 import { FindUsersDto } from '../dtos/get-users.dto';
+import { RootFilterQuery } from 'mongoose';
 
 @Injectable()
 export class GetUsersService {
@@ -18,7 +15,7 @@ export class GetUsersService {
   ) {}
 
   async getUsers(query: FindUsersDto) {
-    const filter: any = {};
+    const filter: RootFilterQuery<User> = {};
 
     if (query.firstName) {
       filter.firstName = { $regex: query.firstName, $options: 'i' };
