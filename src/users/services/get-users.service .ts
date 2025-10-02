@@ -37,13 +37,6 @@ export class GetUsersService {
       filter.employeeId = query.employeeId;
     }
 
-    if (query.month && query.year) {
-      const start = new Date(query.year, query.month - 1, 1);
-      const end = new Date(query.year, query.month, 0, 23, 59, 59, 999);
-
-      filter.date = { $gte: start, $lte: end };
-    }
-
     const users = await this.userModel.find(filter).lean().exec();
     if (!users) {
       throw new Error('Users not found');

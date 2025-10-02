@@ -38,7 +38,7 @@ export class GetCustomerTotalsService {
     const difference = totalExpectedPaid - totalActualPaid;
     const totalProfit = totalPapersSales - totalPapersCost;
     const commissionRate = 0.1;
-    const employeeCommission = totalProfit * commissionRate;
+    const employeeCommission = Number((totalProfit * commissionRate).toFixed(2));
     const netProfit = totalProfit - employeeCommission;
 
     return {

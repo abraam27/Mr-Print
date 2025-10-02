@@ -34,6 +34,10 @@ export class GetAttendanceLogDto {
   time?: AttendanceTime;
 
   @IsOptional()
+  @IsString()
+  dayOfWeek?: string;
+
+  @IsOptional()
   @IsBoolean()
   @Type(() => Boolean) // ensures query string "true"/"false" is converted
   isHoliday?: boolean;

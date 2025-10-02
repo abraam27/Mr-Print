@@ -99,7 +99,9 @@ export class PrepareTransactionService {
       employeeId: customer?.employeeId,
       employeePercentage: customer?.employeePercentage ?? 0.1,
       employeeName: employee
-        ? `${employee.firstName} ${employee.lastName}`
+        ? employee.lastName
+          ? `${employee.firstName} ${employee.lastName}`
+          : employee.firstName
         : '',
       paperCost: PaperCostMap[transaction.paperType],
       totalCost,
@@ -110,7 +112,9 @@ export class PrepareTransactionService {
       netProfit,
       comment: transaction.comment,
       customerName: customer
-        ? `${customer.firstName} ${customer.lastName}`
+        ? customer.lastName
+          ? `${customer.firstName} ${customer.lastName}`
+          : customer.firstName
         : '',
     };
   }

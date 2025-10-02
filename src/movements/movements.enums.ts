@@ -14,7 +14,7 @@ export enum ExpenseCategory {
   Water = 'water',
   NewMachine = 'new machine',
   Transportations = 'transportations',
-  ShopAccessories = 'shop accessories',
+  Shop = 'shop',
   Motaheda = 'motaheda',
   Clothing = 'clothing',
   Other = 'other',

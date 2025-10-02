@@ -10,6 +10,7 @@ import { UserRole } from 'src/users/users.enums';
 import { GetTransactionsService } from 'src/transactions/services/get-transactions.service';
 import { ExpenseCategory, MovementType } from 'src/movements/movements.enums';
 import { sumBy } from 'src/common/helpers/sumBy.helper';
+import { calculateFridays } from 'src/common/helpers/fridaysCount.helper';
 
 @Injectable()
 export class GetTotalsService {
@@ -39,7 +40,9 @@ export class GetTotalsService {
     });
 
     const total = sumBy(logsWithCost, (log) => log.cost);
-    return employee?.role == UserRole.Employee ? total + 600 : total;
+    const fridaysCount = await calculateFridays(month, year);
+    const totalFridays = 150 * fridaysCount || 600;
+    return employee?.role == UserRole.Employee ? total + totalFridays : total;
   }
 
   async calculateCommission(employeeId: string, month: number, year: number) {

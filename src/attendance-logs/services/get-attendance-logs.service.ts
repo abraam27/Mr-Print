@@ -56,6 +56,10 @@ export class GetAttendanceLogsService {
       filter.userId = query.userId;
     }
 
+    if (query.dayOfWeek) {
+      filter.dayOfWeek = query.dayOfWeek;
+    }
+
     // ✅ Apply pagination only if requested
     if (query.pagination) {
       const page = query.page ?? 1;
