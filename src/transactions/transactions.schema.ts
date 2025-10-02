@@ -8,23 +8,33 @@ import { PaperType, TransactionStatus } from './transactions.enums';
 })
 export class Transaction {
   @Prop({
-    type: String,
+    type: Date,
     required: true,
     get: (date: Date) => {
       if (!date) return null;
-      return new Date(date).toLocaleDateString('en-GB');
+      return new Intl.DateTimeFormat('en-GB', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+      }).format(new Date(date));
     },
   })
-  date: string;
+  date: Date;
+
+  @Prop({ type: String, required: true })
+  dayOfWeek: string;
 
   @Prop({ type: String, required: false })
   customerId: string;
 
-  @Prop({ type: Boolean, default: false, required: false })
-  isShop: boolean;
+  @Prop({ type: String, required: false })
+  customerName: string;
 
   @Prop({ type: String, required: false })
   employeeId: string;
+
+  @Prop({ type: String, required: false })
+  employeeName: string;
 
   @Prop({ type: Number, required: false })
   employeePercentage: number;
@@ -50,7 +60,12 @@ export class Transaction {
   @Prop({ type: Number, required: false })
   expectedPaid: number;
 
-  @Prop({ type: String, enum: TransactionStatus, required: false })
+  @Prop({
+    type: String,
+    enum: TransactionStatus,
+    default: TransactionStatus.Pending,
+    required: false,
+  })
   status: TransactionStatus;
 
   @Prop({ type: String, required: false })
@@ -64,3 +79,5 @@ export class Transaction {
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);
+TransactionSchema.set('toJSON', { getters: true });
+TransactionSchema.set('toObject', { getters: true });

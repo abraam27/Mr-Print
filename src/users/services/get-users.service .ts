@@ -64,7 +64,9 @@ export class GetUsersService {
 
         return {
           ...userWithTotals,
-          employee,
+          employeeName: employee
+            ? `${employee.firstName} ${employee.lastName}`
+            : '',
         };
       }),
     );

@@ -13,10 +13,9 @@ export class CreateTransactionService {
     private readonly prepareTransactionService: PrepareTransactionService,
   ) {}
 
-  async createTransaction(transaction: CreateTransactionDto) {
-    const updatedTransaction =
-      this.prepareTransactionService.prepareTransaction(transaction);
-
-    return await this.transactionModel.create(updatedTransaction);
+  async createTransaction(createTransactionDto: CreateTransactionDto) {
+    const transaction =
+      await this.prepareTransactionService.prepareTransaction(createTransactionDto);
+    return await this.transactionModel.create(transaction);
   }
 }

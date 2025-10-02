@@ -11,7 +11,7 @@ export class GetTransactionsService {
 
   async getTransactions(query: GetTransactionDto) {
     const { filter, options } = this.buildFilterFromQuery(query);
-    return this.transactionModel.find(filter, null, options).lean().exec();
+    return this.transactionModel.find(filter, null, options).exec();
   }
 
   buildFilterFromQuery(query: GetTransactionDto): {

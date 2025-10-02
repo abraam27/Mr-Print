@@ -20,10 +20,12 @@ export class GetMovementDto {
   toDate?: string;
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   month?: number;
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   year?: number;
 
@@ -47,7 +49,7 @@ export class GetMovementDto {
   @IsOptional()
   @IsBoolean()
   @Type(() => Boolean)
-  isCustomers?: boolean;
+  isCustomer?: boolean;
 
   @IsOptional()
   @IsEnum(ExpenseCategory)

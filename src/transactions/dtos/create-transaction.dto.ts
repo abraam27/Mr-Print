@@ -1,29 +1,24 @@
 import {
   IsString,
-  IsBoolean,
   IsNumber,
   IsOptional,
   IsEnum,
-  IsNotEmpty,
+  IsDate,
 } from 'class-validator';
-import { PaperType } from '../transactions.enums';
+import { PaperType, TransactionStatus } from '../transactions.enums';
+import { Transform } from 'class-transformer';
+import { DateTime } from 'luxon';
 
 export class CreateTransactionDto {
-  @IsString()
-  @IsNotEmpty()
-  date: string;
+  @Transform(({ value }) => {
+    return DateTime.fromFormat(value, 'dd/MM/yyyy', { zone: 'utc' }).toJSDate();
+  })
+  @IsDate()
+  date: Date;
 
   @IsString()
   @IsOptional()
   customerId?: string;
-
-  @IsBoolean()
-  @IsOptional()
-  isShop: boolean;
-
-  @IsString()
-  @IsOptional()
-  employeeId?: string;
 
   @IsNumber()
   @IsOptional()
@@ -36,13 +31,9 @@ export class CreateTransactionDto {
   @IsOptional()
   paperSales?: number;
 
-  @IsNumber()
   @IsOptional()
-  totalPapersSales?: number;
-
-  @IsNumber()
-  @IsOptional()
-  paid?: number;
+  @IsEnum(TransactionStatus)
+  status?: TransactionStatus;
 
   @IsString()
   @IsOptional()

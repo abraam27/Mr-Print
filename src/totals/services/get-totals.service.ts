@@ -49,7 +49,7 @@ export class GetTotalsService {
       year,
     });
     const commissions = transactions.map((transaction) => {
-      const employeePercentage = transaction.employeePercentage / 100;
+      const employeePercentage = transaction.employeePercentage ?? 0.1;
       const profit = transaction.totalPapersSales - transaction.totalCost;
       const commission = employeePercentage * profit;
       return commission;
@@ -60,7 +60,7 @@ export class GetTotalsService {
   async calculateEmployeePaid(employeeId: string, month: number, year: number) {
     const movements = await this.getMovementsService.getMovements({
       type: MovementType.Expense,
-      subCategory: ExpenseCategory.Salary,
+      category: ExpenseCategory.Salary,
       userId: employeeId,
       month,
       year,
@@ -69,23 +69,23 @@ export class GetTotalsService {
     return total;
   }
 
-  async calculateOwnerExpenses(ownerId: string) {
+  async calculateOwnerExpenses(ownerId: string, month: number, year: number) {
     const expenses = await this.getMovementsService.getMovements({
       type: MovementType.Expense,
       ownerId,
-      month: 0,
-      year: 0,
+      month,
+      year,
     });
     const total = sumBy(expenses, (movement) => movement.amount);
     return total;
   }
 
-  async calculateOwnerIncome(ownerId: string) {
+  async calculateOwnerIncome(ownerId: string, month: number, year: number) {
     const income = await this.getMovementsService.getMovements({
       type: MovementType.Income,
       userId: ownerId,
-      month: 0,
-      year: 0,
+      month,
+      year,
     });
     const total = sumBy(income, (movement) => movement.amount);
     return total;

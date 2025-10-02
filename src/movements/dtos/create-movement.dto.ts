@@ -1,40 +1,45 @@
 import {
-  IsBoolean,
   IsEnum,
-  IsNotEmpty,
+  IsString,
+  IsBoolean,
   IsNumber,
   IsOptional,
-  IsString,
-  Min,
+  IsDate,
 } from 'class-validator';
 import { MovementType, ExpenseCategory } from '../movements.enums';
+import { Transform } from 'class-transformer';
+import { DateTime } from 'luxon';
 
 export class CreateMovementDto {
-  @IsString()
-  @IsNotEmpty()
-  date: string;
+  @Transform(({ value }) => {
+    return DateTime.fromFormat(value, 'dd/MM/yyyy', { zone: 'utc' }).toJSDate();
+  })
+  @IsDate()
+  date: Date;
 
   @IsEnum(MovementType)
   type: MovementType;
 
-  @IsOptional()
   @IsString()
+  @IsOptional()
   ownerId?: string;
 
   @IsBoolean()
-  isShop: boolean;
+  @IsOptional()
+  isShop?: boolean;
 
   @IsBoolean()
-  isCustomers: boolean;
+  @IsOptional()
+  isCustomer?: boolean;
 
   @IsEnum(ExpenseCategory)
+  @IsOptional()
   category: ExpenseCategory;
 
-  @IsOptional()
   @IsString()
-  subCategory?: string;
+  @IsOptional()
+  userId?: string; // expense employee id for salaries and income customer id for payments
 
   @IsNumber()
-  @Min(0)
   amount: number;
 }

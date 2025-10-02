@@ -20,10 +20,12 @@ export class GetAttendanceLogDto {
   toDate?: string; // e.g. filter to this date (inclusive)
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   month?: number; // e.g. filter from this date (inclusive)
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   year?: number; // e.g. filter to this date (inclusive)
 

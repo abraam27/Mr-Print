@@ -28,8 +28,8 @@ export class GetCustomerTotalsService {
     // Transactions totals
     const totalExpectedPaid = sumBy(transactions, (t) => t.expectedPaid);
     const totalPapers = sumBy(transactions, (t) => t.numberOfPapers);
-    const totalPapersCost = sumBy(transactions, (t) => t.paperCost);
-    const totalPapersSales = sumBy(transactions, (t) => t.paperSales);
+    const totalPapersCost = sumBy(transactions, (t) => t.totalCost);
+    const totalPapersSales = sumBy(transactions, (t) => t.totalPapersSales);
 
     // Movements totals
     const totalActualPaid = sumBy(movements, (m) => m.amount);
@@ -37,9 +37,9 @@ export class GetCustomerTotalsService {
     // Calculations
     const difference = totalExpectedPaid - totalActualPaid;
     const totalProfit = totalPapersSales - totalPapersCost;
-    const commissionRate = 0.1 / 100;
-    const commission = totalProfit * commissionRate;
-    const netProfit = totalProfit + commission;
+    const commissionRate = 0.1;
+    const employeeCommission = totalProfit * commissionRate;
+    const netProfit = totalProfit - employeeCommission;
 
     return {
       totalExpectedPaid,
@@ -49,7 +49,7 @@ export class GetCustomerTotalsService {
       totalPapersCost,
       totalPapersSales,
       totalProfit,
-      commission,
+      employeeCommission,
       netProfit,
     };
   }

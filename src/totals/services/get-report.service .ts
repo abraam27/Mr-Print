@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { GetMovementsService } from 'src/movements/services/get-movements.service';
 import { sumBy } from 'src/common/helpers/sumBy.helper';
 import { MovementType } from 'src/movements/movements.enums';
+import { Movement } from 'src/movements/movements.schema';
 
 @Injectable()
 export class GetReportService {
@@ -10,36 +11,20 @@ export class GetReportService {
   async getReport(month: number, year: number) {
     const customersIn = await this.getMovementsService.getMovements({
       type: MovementType.Income,
-      isCustomers: true,
+      isCustomer: true,
       month,
       year,
     });
-    const customersOut = await this.getMovementsService.getMovements({
-      type: MovementType.Expense,
-      isCustomers: true,
-      month,
-      year,
-    });
+
     const shopIn = await this.getMovementsService.getMovements({
       type: MovementType.Income,
       isShop: true,
       month,
       year,
     });
-    const shopOut = await this.getMovementsService.getMovements({
-      type: MovementType.Expense,
-      isShop: true,
-      month,
-      year,
-    });
 
     const totalCustomersIn = sumBy(customersIn, (movement) => movement.amount);
-    const totalCustomersOut = sumBy(
-      customersOut,
-      (movement) => movement.amount,
-    );
     const totalShopIn = sumBy(shopIn, (movement) => movement.amount);
-    const totalShopOut = sumBy(shopOut, (movement) => movement.amount);
 
     const expenses = await this.getMovementsService.getMovements({
       type: MovementType.Expense,
@@ -55,13 +40,28 @@ export class GetReportService {
 
     return {
       totalCustomersIn,
-      totalCustomersOut,
       totalShopIn,
-      totalShopOut,
+      totalIncome: totalCustomersIn + totalShopIn,
       totalExpenses,
       grossProfit,
       given,
       netProfit,
+      ...this.summarizeExpenses(expenses),
+    };
+  }
+
+  private summarizeExpenses(movements: Movement[]) {
+    const summary: Record<string, number> = {};
+  
+    for (const move of movements) {
+      if (!summary[move.category]) {
+        summary[move.category] = 0;
+      }
+      summary[move.category] += move.amount;
+    }
+  
+    return {
+      expensesSummary: summary,
     };
   }
 }

@@ -15,10 +15,17 @@ export class AttendanceLog {
     required: true,
     get: (date: Date) => {
       if (!date) return null;
-      return new Date(date).toLocaleDateString('en-GB');
+      return new Intl.DateTimeFormat('en-GB', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+      }).format(new Date(date));
     },
   })
   date: Date;
+
+  @Prop({ type: String, required: true })
+  dayOfWeek: string;
 
   @Prop({ type: String, enum: AttendanceTime, required: true })
   time: AttendanceTime;
@@ -32,6 +39,9 @@ export class AttendanceLog {
   @Prop({ type: String, required: true })
   userId: string;
 
+  @Prop({ type: String, required: true })
+  userName: string;
+
   @Prop({ type: String, required: false })
   comment: string;
 
@@ -43,3 +53,5 @@ export class AttendanceLog {
 }
 
 export const AttendanceLogSchema = SchemaFactory.createForClass(AttendanceLog);
+AttendanceLogSchema.set('toJSON', { getters: true });
+AttendanceLogSchema.set('toObject', { getters: true });

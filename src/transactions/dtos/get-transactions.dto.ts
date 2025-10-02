@@ -60,10 +60,12 @@ export class GetTransactionDto {
   toDate?: string;
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   month?: number;
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   year?: number;
 

@@ -26,12 +26,13 @@ export class GetOwnerTotalsService {
 
     const difference = salary + commission - paid;
     const expenses =
-      await this.getTotalsService.calculateOwnerExpenses(ownerId);
-    const income = await this.getTotalsService.calculateOwnerIncome(ownerId);
+      await this.getTotalsService.calculateOwnerExpenses(ownerId, month, year);
+    const income = await this.getTotalsService.calculateOwnerIncome(ownerId, month, year);
     const profit = income - expenses;
     return {
       salary,
       commission,
+      totalSalary: salary + commission,
       paid,
       difference,
       expenses,

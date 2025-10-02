@@ -1,22 +1,30 @@
 import { CreateTransactionDto } from '../dtos/create-transaction.dto';
-import { UsersService } from 'src/users/services/users.service';
+import { GetUserByIdService } from 'src/users/services/get-user-by-id.service';
 import { PaperCostMap } from '../transactions.constants';
+import { getWeekday } from 'src/common/helpers/getWeekday.helper';
+import { forwardRef } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 
 export class PrepareTransactionService {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    @Inject(forwardRef(() => GetUserByIdService))
+    private readonly getUserByIdService: GetUserByIdService,
+  ) {}
 
-  async prepareTransaction(transaction: CreateTransactionDto) {
-    const customer = transaction.customerId
-      ? await this.usersService.getUserById(transaction.customerId)
+  async prepareTransaction(createTransactionDto: CreateTransactionDto) {
+    const customer = createTransactionDto.customerId
+      ? await this.getUserByIdService.getUserById(
+          createTransactionDto.customerId,
+        )
       : null;
 
-    const totalCost = this.calculateTotalCost(transaction);
-    const totalPapersSales = this.calculateTotalSales(transaction);
-    const grossProfit = this.calculateGrossProfit(
-      totalPapersSales,
-      totalCost,
-      transaction.paid,
-    );
+    const employee = customer?.employeeId
+      ? await this.getUserByIdService.getUserById(customer?.employeeId)
+      : null;
+
+    const totalCost = this.calculateTotalCost(createTransactionDto);
+    const totalPapersSales = this.calculateTotalSales(createTransactionDto);
+    const grossProfit = this.calculateGrossProfit(totalPapersSales, totalCost);
     const employeeCommission = this.calculateEmployeeCommission(
       grossProfit,
       (customer?.employeePercentage as number) ?? 0.1,
@@ -24,8 +32,9 @@ export class PrepareTransactionService {
     const netProfit = this.calculateNetProfit(grossProfit, employeeCommission);
 
     return this.buildTransaction(
-      transaction,
+      createTransactionDto,
       customer,
+      employee,
       totalCost,
       totalPapersSales,
       grossProfit,
@@ -51,9 +60,8 @@ export class PrepareTransactionService {
   private calculateGrossProfit(
     totalSales: number | null,
     totalCost: number | null,
-    paid?: number,
   ): number {
-    return totalSales && totalCost && paid ? totalSales - totalCost : 0;
+    return totalSales && totalCost ? totalSales - totalCost : 0;
   }
 
   private calculateEmployeeCommission(
@@ -77,6 +85,7 @@ export class PrepareTransactionService {
   private buildTransaction(
     transaction: CreateTransactionDto,
     customer: any,
+    employee: any,
     totalCost: number | null,
     totalSales: number | null,
     grossProfit: number,
@@ -85,17 +94,24 @@ export class PrepareTransactionService {
   ) {
     return {
       ...transaction,
-      date: new Date(transaction.date),
+      date: transaction.date,
+      dayOfWeek: getWeekday(transaction.date.toISOString()),
+      employeeId: customer?.employeeId,
       employeePercentage: customer?.employeePercentage ?? 0.1,
+      employeeName: employee
+        ? `${employee.firstName} ${employee.lastName}`
+        : '',
       paperCost: PaperCostMap[transaction.paperType],
       totalCost,
       totalPapersSales: totalSales,
       expectedPaid: totalSales,
-      paid: transaction?.paid ?? 0,
       grossProfit,
       employeeCommission,
       netProfit,
       comment: transaction.comment,
+      customerName: customer
+        ? `${customer.firstName} ${customer.lastName}`
+        : '',
     };
   }
 }
