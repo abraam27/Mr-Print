@@ -6,12 +6,14 @@ export class GetOwnerTotalsService {
   constructor(private readonly getTotalsService: GetTotalsService) {}
 
   async getOwnerTotals(ownerId: string, month: number, year: number) {
-    const salary = await this.getTotalsService.calculateSalary(
+    const salaries = await this.getTotalsService.calculateSalary(ownerId, month, year);
+
+    const shifts = await this.getTotalsService.calculateShifts(
       ownerId,
       month,
       year,
     );
-
+    
     const commission = await this.getTotalsService.calculateCommission(
       ownerId,
       month,
@@ -24,15 +26,23 @@ export class GetOwnerTotalsService {
       year,
     );
 
-    const difference = salary + commission - paid;
-    const expenses =
-      await this.getTotalsService.calculateOwnerExpenses(ownerId, month, year);
-    const income = await this.getTotalsService.calculateOwnerIncome(ownerId, month, year);
+    const difference = salaries.salary + commission - paid;
+    const expenses = await this.getTotalsService.calculateOwnerExpenses(
+      ownerId,
+      month,
+      year,
+    );
+    const income = await this.getTotalsService.calculateOwnerIncome(
+      ownerId,
+      month,
+      year,
+    );
     const profit = income - expenses;
     return {
-      salary,
-      commission,
-      totalSalary: salary + commission,
+      ...shifts,
+      ...salaries,
+      commission: Number(commission.toFixed(2)),
+      totalSalary: Number((salaries.salary + commission).toFixed(2)),
       paid,
       difference,
       expenses,

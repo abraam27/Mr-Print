@@ -6,7 +6,9 @@ export class GetEmployeeTotalsService {
   constructor(private readonly getTotalsService: GetTotalsService) {}
 
   async getEmployeeTotals(employeeId: string, month: number, year: number) {
-    const salary = await this.getTotalsService.calculateSalary(
+    const salaries = await this.getTotalsService.calculateSalary(employeeId, month, year);
+
+    const shifts = await this.getTotalsService.calculateShifts(
       employeeId,
       month,
       year,
@@ -24,9 +26,10 @@ export class GetEmployeeTotalsService {
       year,
     );
 
-    const difference = salary + commission - paid;
+    const difference = salaries.salary + commission - paid;
     return {
-      salary,
+      ...shifts,
+      ...salaries,
       commission,
       paid,
       difference,

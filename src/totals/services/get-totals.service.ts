@@ -11,6 +11,7 @@ import { GetTransactionsService } from 'src/transactions/services/get-transactio
 import { ExpenseCategory, MovementType } from 'src/movements/movements.enums';
 import { sumBy } from 'src/common/helpers/sumBy.helper';
 import { calculateFridays } from 'src/common/helpers/fridaysCount.helper';
+import { WorkType } from 'src/attendance-logs/attendance-logs.enums';
 
 @Injectable()
 export class GetTotalsService {
@@ -24,25 +25,60 @@ export class GetTotalsService {
 
   async calculateSalary(userId: string, month: number, year: number) {
     const employee = await this.getUserByIdService.getUserById(userId);
+    const shifts = await this.calculateShifts(userId, month, year);
+    let shiftsCost = 0;
+    let overtimeCost = 0;
+    let holidaysShiftsCost = 0;
+    let holidaysOvertimeCost = 0;
+    if (employee?.role == UserRole.Owner) {
+      shiftsCost = shifts.shifts * OwnerShiftCostMap[WorkType.Shift];
+      overtimeCost = shifts.overtime * OwnerShiftCostMap[WorkType.Overtime];
+      holidaysShiftsCost = shifts.holidaysShifts * OwnerShiftCostMap[WorkType.Shift] * 2;
+      holidaysOvertimeCost = shifts.holidaysOvertime * OwnerShiftCostMap[WorkType.Overtime] * 2;
+    } else {
+      shiftsCost = shifts.shifts * EmployeeShiftCostMap[WorkType.Shift];
+      overtimeCost = shifts.overtime * EmployeeShiftCostMap[WorkType.Overtime];
+      holidaysShiftsCost = shifts.holidaysShifts * EmployeeShiftCostMap[WorkType.Shift] * 2;
+      holidaysOvertimeCost = shifts.holidaysOvertime * EmployeeShiftCostMap[WorkType.Overtime] * 2;
+    }
+    const total = shiftsCost + overtimeCost + holidaysShiftsCost + holidaysOvertimeCost;
+    const totalFridays = 150 * (await calculateFridays(month, year)) || 600;
+    return {
+      shiftsCost,
+      overtimeCost,
+      holidaysShiftsCost,
+      holidaysOvertimeCost,
+      salary:
+        employee?.role == UserRole.Employee ? total + totalFridays : total,
+    };
+  }
+
+  async calculateShifts(userId: string, month: number, year: number) {
     const attendanceLogs =
       await this.getAttendanceLogsService.getAttendanceLogs({
         userId,
         month,
         year,
       });
-    const logsWithCost = attendanceLogs.map((log) => {
-      const baseCost =
-        employee?.role == UserRole.Owner
-          ? OwnerShiftCostMap[log.workType]
-          : (EmployeeShiftCostMap[log.workType] ?? 0);
-      const cost = log.isHoliday ? baseCost * 2 : baseCost;
-      return { ...log, cost };
-    });
 
-    const total = sumBy(logsWithCost, (log) => log.cost);
-    const fridaysCount = await calculateFridays(month, year);
-    const totalFridays = 150 * fridaysCount || 600;
-    return employee?.role == UserRole.Employee ? total + totalFridays : total;
+    const counters = {
+      shifts: 0,
+      overtime: 0,
+      holidaysShifts: 0,
+      holidaysOvertime: 0,
+    };
+
+    for (const log of attendanceLogs) {
+      const { isHoliday, workType } = log;
+
+      if (workType === WorkType.Shift) {
+        counters[isHoliday ? 'holidaysShifts' : 'shifts']++;
+      } else if (workType === WorkType.Overtime) {
+        counters[isHoliday ? 'holidaysOvertime' : 'overtime']++;
+      }
+    }
+
+    return counters;
   }
 
   async calculateCommission(employeeId: string, month: number, year: number) {
