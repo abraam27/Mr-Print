@@ -30,7 +30,7 @@ export class CreateAttendanceLogService {
 
     const attendanceLog = {
       ...createAttendanceLogDto,
-      isHoliday: dayOfWeek === 'Friday',
+      isHoliday: createAttendanceLogDto.isHoliday ?? dayOfWeek === 'Friday',
       dayOfWeek,
       userName: user.firstName + ' ' + user.lastName,
     };

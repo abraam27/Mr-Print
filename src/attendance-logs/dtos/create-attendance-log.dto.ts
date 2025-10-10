@@ -1,6 +1,7 @@
 import { Transform } from 'class-transformer';
 import {
   IsArray,
+  IsBoolean,
   IsDate,
   IsEnum,
   IsNotEmpty,
@@ -26,6 +27,11 @@ export class CreateAttendanceLogDto {
   @IsNotEmpty()
   @IsEnum(WorkType)
   workType: WorkType;
+
+  @IsOptional()
+  @IsBoolean()
+  @Type(() => Boolean)
+  isHoliday?: boolean;
 
   @IsNotEmpty()
   @IsString()

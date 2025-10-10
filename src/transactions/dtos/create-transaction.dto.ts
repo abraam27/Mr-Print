@@ -31,6 +31,10 @@ export class CreateTransactionDto {
   @IsOptional()
   paperSales?: number;
 
+  @IsNumber()
+  @IsOptional()
+  expectedPaid?: number;
+
   @IsOptional()
   @IsEnum(TransactionStatus)
   status?: TransactionStatus;
