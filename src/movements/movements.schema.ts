@@ -51,6 +51,9 @@ export class Movement {
   @Prop({ type: Number, required: true })
   amount: number;
 
+  @Prop({ type: String, required: false })
+  comment?: string;
+
   @Prop({ type: Date, default: Date.now })
   createdAt: Date;
 

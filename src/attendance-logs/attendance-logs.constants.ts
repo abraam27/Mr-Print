@@ -6,6 +6,6 @@ export const EmployeeShiftCostMap: Record<WorkType, number> = {
 };
 
 export const OwnerShiftCostMap: Record<WorkType, number> = {
-  [WorkType.Shift]: 100,
+  [WorkType.Shift]: 150,
   [WorkType.Overtime]: 50,
 };

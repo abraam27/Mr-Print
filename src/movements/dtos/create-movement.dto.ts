@@ -42,4 +42,8 @@ export class CreateMovementDto {
 
   @IsNumber()
   amount: number;
+
+  @IsString()
+  @IsOptional()
+  comment?: string;
 }

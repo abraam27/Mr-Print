@@ -31,10 +31,17 @@ export class CreateMovementService {
     const movement = {
       ...createMovementDto,
       dayOfWeek,
-      ...(owner && { ownerName: `${owner.firstName} ${owner.lastName}` }),
-      ...(user && { userName: `${user.firstName} ${user.lastName}` }),
+      ownerName: ownerId
+        ? owner?.lastName
+          ? `${owner.firstName} ${owner.lastName}`
+          : owner?.firstName
+        : '',
+      userName: userId
+        ? user?.lastName
+          ? `${user.firstName} ${user.lastName}`
+          : user?.firstName
+        : '',
     };
-
     return this.movementModel.create(movement);
   }
 }
