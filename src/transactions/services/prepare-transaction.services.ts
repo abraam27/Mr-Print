@@ -105,7 +105,7 @@ export class PrepareTransactionService {
         : '',
       paperCost: PaperCostMap[transaction.paperType],
       totalCost,
-      totalPapersSales: totalSales,
+      totalPapersSales: Number(totalSales?.toFixed(2)),
       expectedPaid: transaction.expectedPaid ?? totalSales,
       grossProfit,
       employeeCommission,

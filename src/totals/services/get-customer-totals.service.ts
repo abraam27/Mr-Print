@@ -47,7 +47,7 @@ export class GetCustomerTotalsService {
       difference,
       totalPapers,
       totalPapersCost,
-      totalPapersSales,
+      totalPapersSales: totalPapersSales.toFixed(2),
       totalProfit,
       employeeCommission,
       netProfit,

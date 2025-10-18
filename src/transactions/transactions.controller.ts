@@ -6,17 +6,19 @@ import {
   Post,
   Put,
   Body,
+  Query,
 } from '@nestjs/common';
 import { TransactionsService } from './services/transactions.service';
 import { CreateTransactionDto } from './dtos/create-transaction.dto';
 import { UpdateTransactionDto } from './dtos/update-transaction.dto';
+import { GetTransactionDto } from './dtos/get-transactions.dto';
 
 @Controller('transactions')
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
   @Get('')
-  public getTransactions() {
-    return this.transactionsService.getTransactions();
+  public getTransactions(@Query() query: GetTransactionDto) {
+    return this.transactionsService.getTransactions(query);
   }
 
   @Get('/:id')

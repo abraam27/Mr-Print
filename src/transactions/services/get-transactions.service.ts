@@ -82,7 +82,7 @@ export class GetTransactionsService {
         [query.sortBy]: query.sortOrder === 'asc' ? 1 : -1,
       };
     } else {
-      options.sort = { Date: -1 };
+      options.sort = { date: -1 };
     }
 
     return { filter, options };
